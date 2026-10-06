@@ -1,0 +1,317 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #000000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   MAIN APPLICATION
+   ========================================================= */
+
+.zuno-app {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  display: grid;
+
+  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) 92px;
+
+  background: #000000;
+  color: #ffffff;
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.zuno-sidebar {
+  grid-column: 1;
+  grid-row: 1;
+
+  min-width: 0;
+  min-height: 0;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background: #000000;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+
+  z-index: 100;
+}
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.zuno-main {
+  grid-column: 2;
+  grid-row: 1;
+
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 80% -15%,
+      rgba(212, 175, 55, 0.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #121212 0%,
+      #0d0d0d 20%,
+      #090909 55%,
+      #070707 100%
+    );
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.zuno-topbar {
+  flex: 0 0 72px;
+
+  width: 100%;
+  height: 72px;
+
+  min-width: 0;
+
+  position: relative;
+
+  z-index: 500;
+
+  background: rgba(8, 8, 8, 0.92);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* =========================================================
+   ROUTED PAGE CONTENT
+   ========================================================= */
+
+.zuno-content {
+  flex: 1 1 auto;
+
+  width: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  position: relative;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  background: transparent;
+
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.zuno-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.zuno-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.zuno-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+
+  border: 3px solid transparent;
+
+  background-clip: padding-box;
+
+  border-radius: 999px;
+}
+
+.zuno-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.45);
+
+  border: 3px solid transparent;
+
+  background-clip: padding-box;
+}
+
+/* =========================================================
+   GLOBAL MUSIC PLAYER
+   ========================================================= */
+
+.zuno-player {
+  grid-column: 1 / -1;
+  grid-row: 2;
+
+  width: 100%;
+  height: 92px;
+  min-height: 92px;
+
+  min-width: 0;
+
+  position: relative;
+
+  z-index: 2000;
+
+  display: block;
+
+  overflow: visible;
+
+  background:
+    linear-gradient(
+      180deg,
+      #181818 0%,
+      #121212 55%,
+      #0d0d0d 100%
+    );
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.55);
+}
+
+/* Make Angular player component fill the entire footer */
+
+.zuno-player app-music-player {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+}
+
+/* =========================================================
+   GOLD PLAYER ACCENT
+   ========================================================= */
+
+.zuno-player::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 1px;
+
+  z-index: 5;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(212, 175, 55, 0.1) 15%,
+      rgba(212, 175, 55, 0.55) 50%,
+      rgba(212, 175, 55, 0.1) 85%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1500px) {
+  .zuno-app {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .zuno-app {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+}
+
+/* =========================================================
+   SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .zuno-app {
+    grid-template-columns: 210px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 88px;
+  }
+
+  .zuno-player {
+    height: 88px;
+    min-height: 88px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .zuno-app {
+    grid-template-columns: 76px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 82px;
+  }
+
+  .zuno-topbar {
+    flex-basis: 64px;
+    height: 64px;
+  }
+
+  .zuno-player {
+    height: 82px;
+    min-height: 82px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .zuno-app {
+    grid-template-columns: 68px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 78px;
+  }
+
+  .zuno-player {
+    height: 78px;
+    min-height: 78px;
+  }
+}

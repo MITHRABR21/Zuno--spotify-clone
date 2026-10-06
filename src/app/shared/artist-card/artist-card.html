@@ -1,0 +1,61 @@
+<article
+  class="artist-card"
+  tabindex="0"
+  role="button"
+  [attr.aria-label]="'Open ' + artist.name"
+  (click)="openArtist()"
+  (keydown.enter)="openArtist()"
+>
+
+  <div class="artist-image-wrapper">
+
+    @if (artist.image) {
+      <img
+        class="artist-image"
+        [src]="artist.image"
+        [alt]="artist.name"
+        loading="lazy"
+      />
+    } @else {
+      <div class="artist-placeholder">
+        <span>
+          {{ artist.name.charAt(0).toUpperCase() }}
+        </span>
+      </div>
+    }
+
+    <div class="artist-image-overlay"></div>
+
+    <button
+      type="button"
+      class="artist-play-button"
+      [class.playing]="isPlaying"
+      [attr.aria-label]="
+        isPlaying
+          ? 'Pause ' + artist.name
+          : 'Play ' + artist.name
+      "
+      (click)="playArtist($event)"
+    >
+      @if (isPlaying) {
+        <span class="pause-icon">Ⅱ</span>
+      } @else {
+        <span class="play-icon">▶</span>
+      }
+    </button>
+
+  </div>
+
+  <div class="artist-info">
+
+    <h3 [title]="artist.name">
+      {{ artist.name }}
+    </h3>
+
+    <p>
+      {{ artist.subtitle || 'Artist' }}
+    </p>
+
+  </div>
+
+</article>

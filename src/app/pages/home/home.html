@@ -1,0 +1,558 @@
+<div class="home-page">
+
+  <!-- =====================================================
+       FILTERS
+       ===================================================== -->
+
+  <div class="home-filters">
+
+    <button
+      type="button"
+      class="filter-chip"
+      [class.active]="activeFilter === 'all'"
+      (click)="setFilter('all')"
+    >
+      All
+    </button>
+
+    <button
+      type="button"
+      class="filter-chip"
+      [class.active]="activeFilter === 'music'"
+      (click)="setFilter('music')"
+    >
+      Music
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+  @if (isLoading()) {
+
+    <section class="home-loading">
+
+      <div class="loading-header"></div>
+
+      <div class="loading-quick-grid">
+
+        @for (
+          item of [1, 2, 3, 4, 5, 6, 7, 8];
+          track item
+        ) {
+
+          <div class="loading-quick-card">
+
+            <div class="loading-quick-image"></div>
+
+            <div class="loading-line"></div>
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <div class="loading-section-title"></div>
+
+
+      <div class="loading-card-row">
+
+        @for (
+          item of [1, 2, 3, 4, 5, 6];
+          track item
+        ) {
+
+          <div class="loading-card">
+
+            <div class="loading-card-image"></div>
+
+            <div class="loading-line"></div>
+
+            <div class="loading-line small"></div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+  } @else {
+
+
+    <!-- =====================================================
+         ERROR
+         ===================================================== -->
+
+    @if (loadError()) {
+
+      <div class="home-error">
+
+        <div class="home-error-icon">
+          ♫
+        </div>
+
+        <div>
+
+          <h3>
+            We couldn't load all recommendations
+          </h3>
+
+          <p>
+            {{ loadError() }}
+          </p>
+
+        </div>
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         ALL - GREETING + QUICK ACCESS
+         ===================================================== -->
+
+    @if (activeFilter === 'all') {
+
+      <section class="quick-section">
+
+        <h1>
+          {{ getGreeting() }}
+        </h1>
+
+
+        <div class="quick-grid">
+
+          @for (
+            item of quickPicks();
+            track item.id
+          ) {
+
+            <article
+              class="quick-card"
+              (click)="openQuickItem(item)"
+            >
+
+              <div class="quick-image-wrapper">
+
+                @if (item.image) {
+
+                  <img
+                    [src]="item.image"
+                    [alt]="item.title"
+                  />
+
+                } @else {
+
+                  <div class="quick-placeholder">
+                    ♫
+                  </div>
+
+                }
+
+              </div>
+
+
+              <div class="quick-info">
+
+                <span>
+                  {{ item.title }}
+                </span>
+
+                @if (item.type === 'liked') {
+
+                  <small>
+                    Your liked songs
+                  </small>
+
+                } @else if (item.type === 'playlist') {
+
+                  <small>
+                    Your playlist
+                  </small>
+
+                } @else {
+
+                  <small>
+                    Made for ZUNO
+                  </small>
+
+                }
+
+              </div>
+
+
+              <button
+                type="button"
+                class="quick-play"
+                aria-label="Play"
+                (click)="$event.stopPropagation(); playQuickItem(item)"
+              >
+                ▶
+              </button>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =====================================================
+         MUSIC HEADING
+         ===================================================== -->
+
+    @if (activeFilter === 'music') {
+
+      <section class="quick-section">
+
+        <h1>
+          Music
+        </h1>
+
+        <span class="section-subtitle">
+          Songs, artists and mixes selected for you
+        </span>
+
+      </section>
+
+    }
+
+
+    <!-- =====================================================
+         POPULAR ARTISTS
+         ===================================================== -->
+
+    @if (artists().length > 0) {
+
+      <section class="content-section artist-section">
+
+        <div class="section-header">
+
+          <div>
+
+            <span class="section-subtitle">
+              Artists for you
+            </span>
+
+            <h2>
+              Popular artists
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="artist-row">
+
+          @for (
+            artist of artists();
+            track artist.name
+          ) {
+
+            <article
+              class="artist-card"
+              (click)="openArtist(artist)"
+            >
+
+              <div class="artist-artwork">
+
+                @if (artist.image) {
+
+                  <img
+                    [src]="artist.image"
+                    [alt]="artist.name"
+                  />
+
+                } @else {
+
+                  <div class="artist-placeholder">
+                    ♫
+                  </div>
+
+                }
+
+
+                <button
+                  type="button"
+                  class="artist-play"
+                  aria-label="Play artist"
+                  (click)="$event.stopPropagation(); playArtist(artist)"
+                >
+                  ▶
+                </button>
+
+              </div>
+
+
+              <h3>
+                {{ artist.name }}
+              </h3>
+
+              <p>
+                Artist
+              </p>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =====================================================
+         MUSIC CATALOG SECTIONS
+         ===================================================== -->
+
+    @for (
+      section of homeSections();
+      track section.id
+    ) {
+
+      <section class="content-section">
+
+        <div class="section-header">
+
+          <div>
+
+            @if (section.subtitle) {
+
+              <span class="section-subtitle">
+                {{ section.subtitle }}
+              </span>
+
+            }
+
+            <h2>
+              {{ section.title }}
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="show-all"
+          >
+            Show all
+          </button>
+
+        </div>
+
+
+        <div class="horizontal-row">
+
+          @for (
+            song of section.songs;
+            track song.id;
+            let index = $index
+          ) {
+
+            <article
+              class="music-card"
+              [class.active]="isCurrentSong(song)"
+              (dblclick)="playQueue(section.songs, index)"
+            >
+
+              <div class="card-artwork">
+
+                @if (song.coverImage) {
+
+                  <img
+                    [src]="song.coverImage"
+                    [alt]="song.title"
+                    loading="lazy"
+                  />
+
+                } @else {
+
+                  <div class="card-placeholder">
+                    ♫
+                  </div>
+
+                }
+
+
+                <div class="card-artwork-overlay"></div>
+
+
+                <button
+                  type="button"
+                  class="floating-play"
+                  [class.visible]="isCurrentSong(song)"
+                  [attr.aria-label]="'Play ' + song.title"
+                  (click)="playQueue(section.songs, index)"
+                >
+
+                  @if (isPlaying(song)) {
+                    Ⅱ
+                  } @else {
+                    ▶
+                  }
+
+                </button>
+
+              </div>
+
+
+              <h3 [title]="song.title">
+                {{ song.title }}
+              </h3>
+
+              <p [title]="song.artist">
+                {{ song.artist }}
+              </p>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =====================================================
+         ALL - LIKED SONGS
+         ===================================================== -->
+
+    @if (
+      activeFilter === 'all' &&
+      musicService.likedSongsCount() > 0
+    ) {
+
+      <section class="liked-home-section">
+
+        <div class="liked-home-card">
+
+
+          <div class="liked-home-background">
+
+            @for (
+              song of musicService.likedSongs().slice(0, 4);
+              track song.id
+            ) {
+
+              @if (song.coverImage) {
+
+                <img
+                  [src]="song.coverImage"
+                  [alt]="song.title"
+                />
+
+              }
+
+            }
+
+          </div>
+
+
+          <div class="liked-home-overlay"></div>
+
+
+          <div class="liked-home-content">
+
+            <span>
+              YOUR LIBRARY
+            </span>
+
+            <h2>
+              Liked Songs
+            </h2>
+
+            <p>
+
+              {{ musicService.likedSongsCount() }}
+
+              liked
+
+              @if (musicService.likedSongsCount() === 1) {
+                song
+              } @else {
+                songs
+              }
+
+            </p>
+
+
+            <div class="liked-home-actions">
+
+              <button
+                type="button"
+                class="liked-open-button"
+                (click)="openLikedSongs()"
+              >
+                Open
+              </button>
+
+              <button
+                type="button"
+                class="liked-play-button"
+                aria-label="Play liked songs"
+                (click)="musicService.playLikedSongs()"
+              >
+                ▶
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =====================================================
+         EMPTY STATE
+         ===================================================== -->
+
+    @if (
+      homeSections().length === 0 &&
+      artists().length === 0
+    ) {
+
+      <section class="empty-home">
+
+        <div class="empty-home-icon">
+          Z
+        </div>
+
+        <h2>
+          Your music is waiting
+        </h2>
+
+        <p>
+          Search for songs, artists and albums to start listening.
+        </p>
+
+      </section>
+
+    }
+
+  }
+
+
+  <div class="home-bottom-space"></div>
+
+</div>

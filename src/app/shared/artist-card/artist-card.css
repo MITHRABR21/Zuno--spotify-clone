@@ -1,0 +1,213 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.artist-card {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+  outline: none;
+}
+
+.artist-card:hover,
+.artist-card:focus-visible {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.artist-card:active {
+  transform: scale(0.985);
+}
+
+.artist-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #1b1b1b;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+}
+
+.artist-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.artist-card:hover .artist-image {
+  transform: scale(1.025);
+}
+
+.artist-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(212, 175, 55, 0.32),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #28230f,
+      #111111 60%,
+      #050505
+    );
+}
+
+.artist-placeholder span {
+  color: #d4af37;
+  font-size: clamp(34px, 5vw, 70px);
+  font-weight: 800;
+}
+
+.artist-image-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    transparent 55%,
+    rgba(0, 0, 0, 0.28)
+  );
+  opacity: 0;
+  transition: opacity 160ms ease;
+  pointer-events: none;
+}
+
+.artist-card:hover .artist-image-overlay,
+.artist-card:focus-visible .artist-image-overlay {
+  opacity: 1;
+}
+
+.artist-play-button {
+  position: absolute;
+  right: 7%;
+  bottom: 7%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #d4af37;
+  color: #080808;
+  font: inherit;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.48);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    background 160ms ease,
+    scale 120ms ease;
+}
+
+.artist-card:hover .artist-play-button,
+.artist-card:focus-within .artist-play-button,
+.artist-play-button.playing {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.artist-play-button:hover {
+  background: #e4c44e;
+  scale: 1.06;
+}
+
+.artist-play-button:active {
+  scale: 0.96;
+}
+
+.artist-play-button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.play-icon {
+  display: block;
+  margin-left: 3px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pause-icon {
+  display: block;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.artist-info {
+  min-width: 0;
+  padding: 13px 2px 4px;
+}
+
+.artist-info h3 {
+  margin: 0;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artist-info p {
+  margin: 5px 0 0;
+  overflow: hidden;
+  color: #a7a7a7;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .artist-card {
+    padding: 10px;
+  }
+
+  .artist-play-button {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .artist-card {
+    padding: 8px;
+  }
+
+  .artist-play-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .artist-info h3 {
+    font-size: 14px;
+  }
+
+  .artist-info p {
+    font-size: 12px;
+  }
+}

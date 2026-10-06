@@ -1,0 +1,234 @@
+<div class="language-page">
+
+@if (language(); as selectedLanguage) {
+
+<section
+  class="language-hero"
+  [style.background-image]="'linear-gradient(135deg, rgba(5,5,5,.96), rgba(5,5,5,.72)), url(' + selectedLanguage.coverImage + ')'"
+>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+
+    <a routerLink="/" class="back-link">
+      <span>←</span>
+      Back to Home
+    </a>
+
+    <div class="language-badge">
+      {{ selectedLanguage.code }}
+    </div>
+
+    <p class="eyebrow">ZUNO LANGUAGE</p>
+
+    <h1>
+      {{ selectedLanguage.name }}
+      <span>{{ selectedLanguage.nativeName }}</span>
+    </h1>
+
+    <p class="hero-description">
+      {{ selectedLanguage.description }}
+    </p>
+
+    <div class="hero-meta">
+      <span>{{ getSongCount() }} songs</span>
+      <span>•</span>
+      <span>Curated for you</span>
+    </div>
+
+    <div class="hero-actions">
+      <button
+        type="button"
+        class="play-all-button"
+        (click)="playAll()"
+      >
+        <span>▶</span>
+        Play All
+      </button>
+
+      <button
+        type="button"
+        class="follow-button"
+      >
+        ♡
+        Follow
+      </button>
+    </div>
+
+  </div>
+</section>
+
+@if (popularSongs().length > 0) {
+
+  <section class="music-section">
+
+    <div class="section-header">
+      <div>
+        <p class="section-eyebrow">MOST PLAYED</p>
+        <h2>Popular {{ selectedLanguage.name }} Songs</h2>
+      </div>
+
+      <span class="song-count">
+        {{ popularSongs().length }} tracks
+      </span>
+    </div>
+
+    <div class="song-grid">
+
+      @for (song of popularSongs(); track song.id; let i = $index) {
+
+        <article
+          class="song-card"
+          [class.active]="isCurrentSong(song)"
+          (dblclick)="playSong(song)"
+        >
+
+          <div class="artwork-wrapper">
+
+            <img
+              [src]="song.coverImage"
+              [alt]="song.title"
+              class="song-artwork"
+            />
+
+            <div class="artwork-overlay"></div>
+
+            <button
+              type="button"
+              class="card-play-button"
+              (click)="playSong(song)"
+              [attr.aria-label]="'Play ' + song.title"
+            >
+              @if (isPlaying(song)) {
+                ❚❚
+              } @else {
+                ▶
+              }
+            </button>
+
+            <span class="song-number">
+              {{ i + 1 }}
+            </span>
+
+          </div>
+
+          <div class="song-info">
+            <h3>{{ song.title }}</h3>
+            <p>{{ song.artist }}</p>
+            <span>{{ song.album }}</span>
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+}
+
+@if (latestSongs().length > 0) {
+
+  <section class="music-section">
+
+    <div class="section-header">
+      <div>
+        <p class="section-eyebrow">LATEST MUSIC</p>
+        <h2>New {{ selectedLanguage.name }} Releases</h2>
+      </div>
+    </div>
+
+    <div class="latest-list">
+
+      @for (song of latestSongs(); track song.id; let i = $index) {
+
+        <div
+          class="latest-song"
+          [class.active]="isCurrentSong(song)"
+        >
+
+          <div class="latest-index">
+            {{ i + 1 }}
+          </div>
+
+          <img
+            [src]="song.coverImage"
+            [alt]="song.title"
+            class="latest-artwork"
+          />
+
+          <div class="latest-info">
+            <h3>{{ song.title }}</h3>
+            <p>{{ song.artist }}</p>
+          </div>
+
+          <div class="latest-album">
+            {{ song.album }}
+          </div>
+
+          <div class="latest-year">
+            {{ song.releaseYear }}
+          </div>
+
+          <button
+            type="button"
+            class="latest-play"
+            (click)="playSong(song)"
+          >
+            @if (isPlaying(song)) {
+              ❚❚
+            } @else {
+              ▶
+            }
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </section>
+}
+
+@if (songs().length === 0) {
+
+  <section class="empty-state">
+
+    <div class="empty-icon">♪</div>
+
+    <h2>No {{ selectedLanguage.name }} songs yet</h2>
+
+    <p>
+      ZUNO is preparing more music in this language.
+    </p>
+
+    <a routerLink="/" class="back-home-button">
+      Back to Home
+    </a>
+
+  </section>
+
+}
+
+} @else {
+
+<section class="empty-state">
+
+  <div class="empty-icon">?</div>
+
+  <h2>Language not found</h2>
+
+  <p>
+    The language you're looking for isn't available in ZUNO.
+  </p>
+
+  <a routerLink="/" class="back-home-button">
+    Back to Home
+  </a>
+
+</section>
+
+}
+
+</div>

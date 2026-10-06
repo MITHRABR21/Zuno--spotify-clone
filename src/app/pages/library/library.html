@@ -1,0 +1,325 @@
+<div class="library-page">
+
+  <section class="library-hero">
+    <div>
+      <span class="library-eyebrow">YOUR COLLECTION</span>
+      <h1>Your Library</h1>
+      <p>Your liked songs, playlists, artists and albums in one place.</p>
+    </div>
+
+    <button
+      type="button"
+      class="create-library-playlist"
+      (click)="createPlaylist()"
+    >
+      + Create playlist
+    </button>
+  </section>
+
+  <section class="library-filter-bar">
+    <button
+      type="button"
+      [class.active]="isFilterActive('all')"
+      (click)="setFilter('all')"
+    >
+      All
+    </button>
+
+    <button
+      type="button"
+      [class.active]="isFilterActive('playlists')"
+      (click)="setFilter('playlists')"
+    >
+      Playlists
+    </button>
+
+    <button
+      type="button"
+      [class.active]="isFilterActive('artists')"
+      (click)="setFilter('artists')"
+    >
+      Artists
+    </button>
+
+    <button
+      type="button"
+      [class.active]="isFilterActive('albums')"
+      (click)="setFilter('albums')"
+    >
+      Albums
+    </button>
+  </section>
+
+  @if (showPlaylists()) {
+    <section class="library-section">
+
+      <div class="section-header">
+        <div>
+          <span class="section-label">PLAYLISTS</span>
+          <h2>Your playlists</h2>
+        </div>
+
+        <button
+          type="button"
+          class="section-create-button"
+          (click)="createPlaylist()"
+        >
+          + New playlist
+        </button>
+      </div>
+
+      <div class="library-grid">
+
+        <article
+          class="library-card liked-card"
+          (click)="openLikedSongs()"
+        >
+          <div class="card-cover liked-card-cover">
+            <span>♥</span>
+
+            <button
+              type="button"
+              class="card-play-button"
+              (click)="playLikedSongs($event)"
+              [disabled]="likedSongs.length === 0"
+              aria-label="Play liked songs"
+            >
+              ▶
+            </button>
+          </div>
+
+          <div class="card-info">
+            <h3>Liked Songs</h3>
+            <p>
+              {{ likedSongsCount }}
+              {{ likedSongsCount === 1 ? 'song' : 'songs' }}
+            </p>
+          </div>
+        </article>
+
+        @for (playlist of playlists; track playlist.id) {
+          <article
+            class="library-card"
+            (click)="openPlaylist(playlist.id)"
+          >
+            <div class="card-cover playlist-card-cover">
+
+              @if (playlist.coverImage) {
+                <img
+                  [src]="playlist.coverImage"
+                  [alt]="playlist.name"
+                  class="album-cover"
+                />
+              } @else {
+                <span>
+                  {{ getPlaylistInitials(playlist.name) }}
+                </span>
+              }
+
+              <div class="card-play-button">
+                ▶
+              </div>
+            </div>
+
+            <div class="card-info">
+              <h3>{{ playlist.name }}</h3>
+
+              <p>
+                {{ getPlaylistSongCount(playlist) }}
+                {{
+                  getPlaylistSongCount(playlist) === 1
+                    ? 'song'
+                    : 'songs'
+                }}
+                • {{ playlist.owner }}
+              </p>
+            </div>
+          </article>
+        }
+
+        <article
+          class="library-card create-playlist-card"
+          (click)="createPlaylist()"
+        >
+          <div class="card-cover playlist-card-cover">
+            <span>＋</span>
+          </div>
+
+          <div class="card-info">
+            <h3>Create playlist</h3>
+            <p>Build your own collection</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  }
+
+  @if (showArtists()) {
+    <section class="library-section">
+
+      <div class="section-header">
+        <div>
+          <span class="section-label">ARTISTS</span>
+          <h2>Artists from your library</h2>
+        </div>
+      </div>
+
+      @if (getLibraryArtists().length > 0) {
+        <div class="artist-grid">
+
+          @for (
+            artist of getLibraryArtists();
+            track artist
+          ) {
+            <article
+              class="artist-card"
+              (click)="openArtist(artist)"
+            >
+              <div class="artist-avatar">
+                {{ getArtistInitial(artist) }}
+              </div>
+
+              <h3>{{ artist }}</h3>
+              <p>Artist</p>
+            </article>
+          }
+
+        </div>
+      } @else {
+        <div class="library-empty">
+          <div class="empty-icon">♪</div>
+
+          <h3>No artists yet</h3>
+
+          <p>
+            Like some songs and their artists will appear here.
+          </p>
+        </div>
+      }
+
+    </section>
+  }
+
+  @if (showAlbums()) {
+    <section class="library-section">
+
+      <div class="section-header">
+        <div>
+          <span class="section-label">ALBUMS</span>
+          <h2>Albums from your library</h2>
+        </div>
+      </div>
+
+      @if (getLibraryAlbums().length > 0) {
+        <div class="library-grid">
+
+          @for (
+            song of getLibraryAlbums();
+            track song.album + song.artist
+          ) {
+            <article
+              class="library-card"
+              (click)="openAlbum(song.album, song.artist)"
+            >
+              <div class="album-cover-wrapper">
+                <img
+                  [src]="song.coverImage"
+                  [alt]="song.album"
+                  class="album-cover"
+                />
+
+                <div class="card-play-button">
+                  ▶
+                </div>
+              </div>
+
+              <div class="card-info">
+                <h3>{{ song.album }}</h3>
+                <p>{{ song.artist }}</p>
+              </div>
+            </article>
+          }
+
+        </div>
+      } @else {
+        <div class="library-empty">
+          <div class="empty-icon">▣</div>
+
+          <h3>No albums yet</h3>
+
+          <p>
+            Albums from your liked songs will appear here.
+          </p>
+        </div>
+      }
+
+    </section>
+  }
+
+  @if (
+    activeFilter === 'all' &&
+    getRecentLikedSongs().length > 0
+  ) {
+    <section class="library-section recent-section">
+
+      <div class="section-header">
+        <div>
+          <span class="section-label">RECENT</span>
+          <h2>Recently added</h2>
+        </div>
+      </div>
+
+      <div class="recent-list">
+
+        @for (
+          song of getRecentLikedSongs();
+          track song.id
+        ) {
+          <article class="recent-row">
+
+            <img
+              [src]="song.coverImage"
+              [alt]="song.title"
+            />
+
+            <div class="recent-info">
+              <h3>{{ song.title }}</h3>
+
+              <button
+                type="button"
+                class="recent-artist"
+                (click)="openArtist(song.artist)"
+              >
+                {{ song.artist }}
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="recent-album"
+              (click)="openAlbum(
+                song.album,
+                song.artist
+              )"
+            >
+              {{ song.album }}
+            </button>
+
+            <button
+              type="button"
+              class="recent-play"
+              (click)="musicService.playSong(song)"
+              aria-label="Play song"
+            >
+              ▶
+            </button>
+
+          </article>
+        }
+
+      </div>
+    </section>
+  }
+
+</div>

@@ -1,0 +1,305 @@
+<div class="playlist-page">
+
+  @if (playlist(); as currentPlaylist) {
+
+    <section class="playlist-hero">
+
+      <div class="playlist-cover">
+        <img
+          [src]="currentPlaylist.coverImage"
+          [alt]="currentPlaylist.name"
+        />
+      </div>
+
+      <div class="playlist-info">
+
+        <span class="playlist-type">
+          PLAYLIST
+        </span>
+
+        <h1>
+          {{ currentPlaylist.name }}
+        </h1>
+
+        <p class="playlist-description">
+          {{
+            currentPlaylist.description ||
+            'Your personal ZUNO playlist.'
+          }}
+        </p>
+
+        <div class="playlist-meta">
+          <span class="playlist-owner">
+            {{ currentPlaylist.owner }}
+          </span>
+
+          <span>•</span>
+
+          <span>
+            {{ songs().length }}
+            {{
+              songs().length === 1
+                ? 'song'
+                : 'songs'
+            }}
+          </span>
+
+          @if (songs().length > 0) {
+            <span>•</span>
+            <span>
+              {{ getTotalDuration() }}
+            </span>
+          }
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="playlist-actions">
+
+      <button
+        type="button"
+        class="main-play-button"
+        [disabled]="songs().length === 0"
+        (click)="playPlaylist()"
+      >
+        ▶
+      </button>
+
+      <button
+        type="button"
+        class="action-button"
+        (click)="renamePlaylist()"
+      >
+        Rename
+      </button>
+
+      <button
+        type="button"
+        class="action-button"
+        (click)="editDescription()"
+      >
+        Edit description
+      </button>
+
+      <button
+        type="button"
+        class="action-button danger-light"
+        [disabled]="songs().length === 0"
+        (click)="clearPlaylist()"
+      >
+        Clear
+      </button>
+
+      <button
+        type="button"
+        class="action-button danger"
+        (click)="deletePlaylist()"
+      >
+        Delete
+      </button>
+
+    </section>
+
+    @if (songs().length > 0) {
+
+      <section class="playlist-tracks">
+
+        <div class="track-header">
+
+          <div>#</div>
+
+          <div>
+            Title
+          </div>
+
+          <div>
+            Album
+          </div>
+
+          <div>
+            Year
+          </div>
+
+          <div>
+            Time
+          </div>
+
+          <div></div>
+
+        </div>
+
+        @for (
+          song of songs();
+          track song.id;
+          let index = $index
+        ) {
+
+          <article
+            class="track-row"
+            [class.active]="isCurrentSong(song)"
+          >
+
+            <div class="track-number">
+
+              @if (isPlaying(song)) {
+                <span class="playing-bars">
+                  ♪
+                </span>
+              } @else {
+                <span>
+                  {{ index + 1 }}
+                </span>
+              }
+
+            </div>
+
+            <div class="track-main">
+
+              <button
+                type="button"
+                class="track-cover-button"
+                (click)="toggleSong(song, index)"
+              >
+
+                <img
+                  [src]="song.coverImage"
+                  [alt]="song.title"
+                />
+
+                <span class="track-cover-overlay">
+
+                  @if (isPlaying(song)) {
+                    ❚❚
+                  } @else {
+                    ▶
+                  }
+
+                </span>
+
+              </button>
+
+              <div class="track-text">
+
+                <button
+                  type="button"
+                  class="track-title"
+                  (click)="toggleSong(song, index)"
+                >
+                  {{ song.title }}
+                </button>
+
+                <button
+                  type="button"
+                  class="track-artist"
+                  (click)="openArtist(song.artist)"
+                >
+                  {{ song.artist }}
+                </button>
+
+              </div>
+
+            </div>
+
+            <button
+              type="button"
+              class="track-album"
+              (click)="openAlbum(
+                song.album,
+                song.artist
+              )"
+            >
+              {{ song.album }}
+            </button>
+
+            <div class="track-year">
+              {{ song.releaseYear }}
+            </div>
+
+            <div class="track-duration">
+              {{ formatDuration(song.duration) }}
+            </div>
+
+            <div class="track-tools">
+
+              <button
+                type="button"
+                class="like-button"
+                [class.liked]="isLiked(song)"
+                (click)="toggleLike(song)"
+                [attr.aria-label]="
+                  isLiked(song)
+                    ? 'Remove from liked songs'
+                    : 'Add to liked songs'
+                "
+              >
+                ♥
+              </button>
+
+              <button
+                type="button"
+                class="remove-button"
+                (click)="removeSong(song)"
+                aria-label="Remove song from playlist"
+              >
+                ×
+              </button>
+
+            </div>
+
+          </article>
+
+        }
+
+      </section>
+
+    } @else {
+
+      <section class="empty-playlist">
+
+        <div class="empty-icon">
+          ♪
+        </div>
+
+        <h2>
+          This playlist is empty
+        </h2>
+
+        <p>
+          Search for music and add songs to this playlist.
+        </p>
+
+        <button
+          type="button"
+          (click)="router.navigate(['/search'])"
+        >
+          Find songs
+        </button>
+
+      </section>
+
+    }
+
+  } @else {
+
+    <section class="playlist-not-found">
+
+      <div class="not-found-icon">
+        ♪
+      </div>
+
+      <h1>
+        Playlist not found
+      </h1>
+
+      <p>
+        This playlist may have been deleted or does not exist.
+      </p>
+
+    </section>
+
+  }
+
+</div>

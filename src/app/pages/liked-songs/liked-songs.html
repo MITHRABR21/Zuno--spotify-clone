@@ -1,0 +1,171 @@
+<div class="liked-page">
+
+  <section class="liked-hero">
+    <div class="liked-cover">
+      ♥
+    </div>
+
+    <div class="liked-info">
+      <span class="liked-label">PLAYLIST</span>
+
+      <h1>Liked Songs</h1>
+
+      <p>
+        Your favorite songs in one place.
+      </p>
+
+      <div class="liked-meta">
+        <span>ZUNO</span>
+        <span>•</span>
+        <span>{{ songCount }} songs</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="liked-actions">
+    <button
+      type="button"
+      class="play-all-button"
+      (click)="playAll()"
+      [disabled]="songs.length === 0"
+    >
+      ▶
+    </button>
+
+    <button
+      type="button"
+      class="shuffle-button"
+      [class.active]="isShuffleEnabled()"
+      (click)="toggleShuffle()"
+      [disabled]="songs.length === 0"
+    >
+      Shuffle
+    </button>
+
+    <button
+      type="button"
+      class="clear-button"
+      (click)="clearAll()"
+      [disabled]="songs.length === 0"
+    >
+      Clear All
+    </button>
+  </section>
+
+  @if (songs.length > 0) {
+
+    <section class="liked-list">
+
+      <div class="liked-header-row">
+        <span>#</span>
+        <span>Title</span>
+        <span>Album</span>
+        <span>Year</span>
+        <span>Time</span>
+        <span></span>
+      </div>
+
+      @for (
+        song of songs;
+        track song.id;
+        let index = $index
+      ) {
+
+        <article
+          class="liked-row"
+          [class.active]="isCurrentSong(song)"
+          (dblclick)="playSong(song, index)"
+        >
+
+          <div class="track-number">
+            @if (isPlaying(song)) {
+              ♪
+            } @else {
+              {{ index + 1 }}
+            }
+          </div>
+
+          <div class="song-main">
+            <div class="song-cover-wrapper">
+              <img
+                [src]="song.coverImage"
+                [alt]="song.title"
+                class="song-cover"
+              />
+
+              <button
+                type="button"
+                class="song-play-button"
+                (click)="toggleSong(song, index); $event.stopPropagation()"
+              >
+                @if (isPlaying(song)) {
+                  Ⅱ
+                } @else {
+                  ▶
+                }
+              </button>
+            </div>
+
+            <div class="song-details">
+              <h3>{{ song.title }}</h3>
+
+              <button
+                type="button"
+                class="artist-link"
+                (click)="openArtist(song.artist); $event.stopPropagation()"
+              >
+                {{ song.artist }}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="album-link"
+            (click)="openAlbum(song.album, song.artist); $event.stopPropagation()"
+          >
+            {{ song.album }}
+          </button>
+
+          <div class="song-year">
+            {{ song.releaseYear }}
+          </div>
+
+          <div class="song-duration">
+            {{ formatDuration(song.duration) }}
+          </div>
+
+          <button
+            type="button"
+            class="like-button liked"
+            (click)="toggleLike(song); $event.stopPropagation()"
+            [attr.aria-label]="'Remove ' + song.title + ' from liked songs'"
+          >
+            ♥
+          </button>
+
+        </article>
+
+      }
+
+    </section>
+
+  } @else {
+
+    <section class="empty-liked">
+
+      <div class="empty-icon">
+        ♥
+      </div>
+
+      <h2>No liked songs yet</h2>
+
+      <p>
+        Songs you like will appear here.
+      </p>
+
+    </section>
+
+  }
+
+</div>

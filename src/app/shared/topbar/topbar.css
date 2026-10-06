@@ -1,0 +1,534 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.topbar {
+  width: 100%;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 0 24px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12, 12, 12, 0.98),
+      rgba(8, 8, 8, 0.96)
+    );
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.04);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.navigation-controls {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+}
+
+.navigation-button {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #050505;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 28px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.35);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.navigation-button:hover {
+  background: #1a1a1a;
+
+  color: #d4af37;
+
+  transform: scale(1.05);
+}
+
+.navigation-button span {
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   SEARCH AREA
+   ========================================================= */
+
+.search-area {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* =========================================================
+   SEARCH BOX
+   ========================================================= */
+
+.search-box {
+  width: min(100%, 520px);
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 0 18px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 999px;
+
+  background: #242424;
+
+  color: #ffffff;
+
+  cursor: text;
+
+  overflow: hidden;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.search-box:hover {
+  background: #2a2a2a;
+
+  border-color:
+    rgba(255, 255, 255, 0.18);
+}
+
+.search-box:focus-within {
+  background: #292929;
+
+  border-color:
+    rgba(212, 175, 55, 0.72);
+
+  box-shadow:
+    0 0 0 2px rgba(212, 175, 55, 0.08);
+}
+
+/* =========================================================
+   SEARCH ICON
+   ========================================================= */
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+
+  font-size: 24px;
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   REAL SEARCH INPUT
+   ========================================================= */
+
+.topbar-search-input {
+  flex: 1;
+
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+
+  border: none !important;
+  outline: none !important;
+
+  background: transparent !important;
+
+  color: #ffffff !important;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  box-shadow: none !important;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.topbar-search-input:focus {
+  border: none !important;
+  outline: none !important;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+}
+
+.topbar-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.64);
+
+  opacity: 1;
+}
+
+.topbar-search-input:-webkit-autofill,
+.topbar-search-input:-webkit-autofill:hover,
+.topbar-search-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff;
+
+  -webkit-box-shadow:
+    0 0 0 1000px #242424 inset;
+
+  transition:
+    background-color 9999s ease-in-out 0s;
+}
+
+/* =========================================================
+   RIGHT ACTIONS
+   ========================================================= */
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-left: auto;
+
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   PREMIUM BUTTON
+   ========================================================= */
+
+.premium-button {
+  height: 40px;
+
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #ffffff;
+
+  color: #050505;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.premium-button:hover {
+  transform: scale(1.04);
+
+  background: #f3f3f3;
+
+  box-shadow:
+    0 5px 18px rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================================
+   INSTALL APP
+   ========================================================= */
+
+.install-button {
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 0 12px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.84);
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.install-button:hover {
+  color: #ffffff;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+}
+
+.install-icon {
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1.5px solid currentColor;
+
+  border-radius: 50%;
+
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* =========================================================
+   ICON BUTTONS
+   ========================================================= */
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  text-decoration: none;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.icon-button:hover {
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  color: #d4af37;
+
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.profile-button {
+  width: 42px;
+  height: 42px;
+
+  padding: 4px;
+
+  border: none;
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-button:hover {
+  background:
+    rgba(212, 175, 55, 0.12);
+
+  transform: scale(1.04);
+
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.2);
+}
+
+.profile-avatar {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7df79,
+      #d4af37 55%,
+      #9a7417
+    );
+
+  color: #111111;
+
+  font-size: 14px;
+  font-weight: 900;
+
+  box-shadow:
+    0 0 16px rgba(212, 175, 55, 0.15);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .install-button {
+    display: none;
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .topbar {
+    padding: 0 16px;
+
+    gap: 12px;
+  }
+
+  .premium-button {
+    display: none;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .topbar {
+    height: 64px;
+
+    padding: 0 12px;
+
+    gap: 10px;
+  }
+
+  .navigation-button {
+    width: 36px;
+    height: 36px;
+
+    font-size: 24px;
+  }
+
+  .navigation-controls {
+    gap: 5px;
+  }
+
+  .search-box {
+    height: 42px;
+
+    padding: 0 14px;
+  }
+
+  .topbar-search-input {
+    font-size: 13px;
+  }
+
+  .icon-button {
+    display: none;
+  }
+
+}
+
+@media (max-width: 520px) {
+
+  .navigation-controls {
+    display: none;
+  }
+
+  .topbar {
+    padding: 0 10px;
+  }
+
+  .search-area {
+    flex: 1;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .topbar-actions {
+    gap: 4px;
+  }
+
+}

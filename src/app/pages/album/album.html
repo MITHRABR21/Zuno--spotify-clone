@@ -1,0 +1,379 @@
+<div class="album-page">
+
+  <!-- =====================================================
+       ALBUM HERO
+       ===================================================== -->
+
+  <section class="album-hero">
+
+    <div class="album-hero-overlay"></div>
+
+    <div class="album-hero-content">
+
+      <div class="album-cover-wrapper">
+
+        @if (albumImage()) {
+
+          <img
+            class="album-cover"
+            [src]="albumImage()"
+            [alt]="albumName()"
+          />
+
+        } @else {
+
+          <div class="album-cover album-placeholder">
+            ♪
+          </div>
+
+        }
+
+      </div>
+
+      <div class="album-info">
+
+        <span class="album-label">
+          ALBUM
+        </span>
+
+        <h1>
+          {{ albumName() }}
+        </h1>
+
+        @if (artistName()) {
+
+          <p class="album-artist">
+            {{ artistName() }}
+          </p>
+
+        }
+
+        <div class="album-meta">
+
+          <span>
+            {{ songs().length }} tracks
+          </span>
+
+          @if (songs().length > 0) {
+
+            <span class="meta-dot">
+              •
+            </span>
+
+            <span>
+              {{ songs()[0].releaseYear }}
+            </span>
+
+            <span class="meta-dot">
+              •
+            </span>
+
+            <span>
+              {{ songs()[0].genre }}
+            </span>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+       ACTIONS
+       ===================================================== -->
+
+  <section class="album-actions">
+
+    <button
+      type="button"
+      class="album-play-button"
+      (click)="playAlbum()"
+      [disabled]="songs().length === 0"
+      aria-label="Play album"
+    >
+      ▶
+    </button>
+
+    <button
+      type="button"
+      class="album-like-button"
+      [class.liked]="isLiked()"
+      (click)="toggleAlbumLike()"
+      aria-label="Like album"
+    >
+      @if (isLiked()) {
+        ♥
+      } @else {
+        ♡
+      }
+    </button>
+
+    <button
+      type="button"
+      class="album-more-button"
+      aria-label="More options"
+    >
+      •••
+    </button>
+
+  </section>
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+  @if (isLoading()) {
+
+    <section class="album-loading">
+
+      <div class="album-loading-spinner"></div>
+
+      <h2>
+        Loading {{ albumName() }}
+      </h2>
+
+      <p>
+        Finding tracks from this album.
+      </p>
+
+    </section>
+
+  }
+
+  <!-- =====================================================
+       ERROR
+       ===================================================== -->
+
+  @if (!isLoading() && errorMessage()) {
+
+    <section class="album-state">
+
+      <div class="album-state-icon">
+        !
+      </div>
+
+      <h2>
+        Unable to load album
+      </h2>
+
+      <p>
+        {{ errorMessage() }}
+      </p>
+
+    </section>
+
+  }
+
+  <!-- =====================================================
+       TRACK LIST
+       ===================================================== -->
+
+  @if (
+    !isLoading() &&
+    !errorMessage() &&
+    songs().length > 0
+  ) {
+
+    <section class="album-tracks">
+
+      <div class="album-section-header">
+
+        <div>
+
+          <span class="album-section-label">
+            ZUNO ALBUM
+          </span>
+
+          <h2>
+            Tracks
+          </h2>
+
+        </div>
+
+        <span class="album-track-count">
+          {{ songs().length }} songs
+        </span>
+
+      </div>
+
+      <div class="album-track-header">
+
+        <div class="track-header-number">
+          #
+        </div>
+
+        <div class="track-header-title">
+          TITLE
+        </div>
+
+        <div class="track-header-album">
+          ALBUM
+        </div>
+
+        <div class="track-header-year">
+          YEAR
+        </div>
+
+        <div class="track-header-genre">
+          GENRE
+        </div>
+
+        <div></div>
+
+        <div></div>
+
+      </div>
+
+      <div class="album-track-list">
+
+        @for (
+          song of songs();
+          track song.id;
+          let index = $index
+        ) {
+
+          <article
+            class="album-track-row"
+            [class.active]="isCurrentSong(song)"
+            (dblclick)="playSong(index)"
+          >
+
+            <!-- TRACK NUMBER -->
+
+            <div class="album-track-number">
+
+              @if (isPlaying(song)) {
+                ♪
+              } @else {
+                {{ index + 1 }}
+              }
+
+            </div>
+
+            <!-- SONG INFORMATION -->
+
+            <div class="album-track-info">
+
+              <div class="album-track-artwork">
+
+                <img
+                  [src]="song.coverImage"
+                  [alt]="song.title"
+                />
+
+                <button
+                  type="button"
+                  class="album-track-play"
+                  (click)="playSong(index)"
+                  [attr.aria-label]="'Play ' + song.title"
+                >
+                  @if (isPlaying(song)) {
+                    Ⅱ
+                  } @else {
+                    ▶
+                  }
+                </button>
+
+              </div>
+
+              <div class="album-track-text">
+
+                <h3>
+                  {{ song.title }}
+                </h3>
+
+                <p>
+                  {{ song.artist }}
+                </p>
+
+              </div>
+
+            </div>
+
+            <!-- ALBUM -->
+
+            <div class="album-track-album">
+              {{ song.album }}
+            </div>
+
+            <!-- YEAR -->
+
+            <div class="album-track-year">
+              {{ song.releaseYear }}
+            </div>
+
+            <!-- GENRE -->
+
+            <div class="album-track-genre">
+              {{ song.genre }}
+            </div>
+
+            <!-- LIKE -->
+
+            <button
+              type="button"
+              class="album-track-like"
+              [class.liked]="isSongLiked(song)"
+              (click)="toggleSongLike(song)"
+              [attr.aria-label]="'Like ' + song.title"
+            >
+              @if (isSongLiked(song)) {
+                ♥
+              } @else {
+                ♡
+              }
+            </button>
+
+            <!-- MORE -->
+
+            <button
+              type="button"
+              class="album-track-more"
+              aria-label="More options"
+            >
+              ⋮
+            </button>
+
+          </article>
+
+        }
+
+      </div>
+
+    </section>
+
+  }
+
+  <!-- =====================================================
+       EMPTY STATE
+       ===================================================== -->
+
+  @if (
+    !isLoading() &&
+    !errorMessage() &&
+    songs().length === 0
+  ) {
+
+    <section class="album-state">
+
+      <div class="album-state-icon">
+        ♪
+      </div>
+
+      <h2>
+        No tracks found
+      </h2>
+
+      <p>
+        We could not find playable tracks for this album.
+      </p>
+
+    </section>
+
+  }
+
+</div>

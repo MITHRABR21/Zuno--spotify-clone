@@ -1,0 +1,476 @@
+<div class="artist-page">
+
+  @if (isLoading()) {
+    <div class="artist-state">
+      <div class="artist-loader"></div>
+
+      <h2>Loading artist...</h2>
+
+      <p>Preparing music and collections.</p>
+    </div>
+  }
+
+  @if (!isLoading() && errorMessage()) {
+    <div class="artist-state">
+      <div class="state-icon">!</div>
+
+      <h2>Unable to load artist</h2>
+
+      <p>{{ errorMessage() }}</p>
+    </div>
+  }
+
+  @if (!isLoading() && !errorMessage()) {
+
+    <!-- ==================== ARTIST HERO ==================== -->
+
+    <section class="artist-hero">
+
+      <div class="artist-hero-glow"></div>
+
+      <div class="artist-image-wrapper">
+
+        @if (artistImage()) {
+          <img
+            class="artist-image"
+            [src]="artistImage()"
+            [alt]="artistName()"
+          />
+        } @else {
+          <div class="artist-image artist-image-placeholder">
+            ♪
+          </div>
+        }
+
+      </div>
+
+      <div class="artist-hero-content">
+
+        <div class="verified-row">
+          <span class="verified-icon">✓</span>
+          <span>VERIFIED ARTIST</span>
+        </div>
+
+        <h1>{{ artistName() }}</h1>
+
+        <p class="artist-meta">
+          @if (songs().length > 0) {
+            <span>
+              {{ songs().length }} tracks available
+            </span>
+          } @else {
+            <span>Artist</span>
+          }
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- ==================== ARTIST ACTIONS ==================== -->
+
+    <section class="artist-actions">
+
+      <button
+        type="button"
+        class="artist-play-button"
+        (click)="playArtist()"
+        [disabled]="songs().length === 0"
+        aria-label="Play all artist songs"
+      >
+        ▶
+      </button>
+
+      <button
+        type="button"
+        class="follow-button"
+        [class.following]="isFollowing()"
+        (click)="toggleFollow()"
+      >
+        @if (isFollowing()) {
+          Following
+        } @else {
+          Follow
+        }
+      </button>
+
+      <button
+        type="button"
+        class="artist-more-button"
+        aria-label="More options"
+      >
+        •••
+      </button>
+
+    </section>
+
+    <!-- ==================== COMPLETE ARTIST MIX ==================== -->
+
+    @if (songs().length > 0) {
+
+      <section class="popular-section">
+
+        <div class="artist-section-header">
+
+          <div>
+            <span class="section-eyebrow">
+              COMPLETE COLLECTION
+            </span>
+
+            <h2>
+              {{ artistName() }} Mix
+            </h2>
+          </div>
+
+          <span class="section-count">
+            {{ songs().length }} songs
+          </span>
+
+        </div>
+
+        <div class="popular-list">
+
+          @for (
+            song of getPopularSongs();
+            track song.id;
+            let index = $index
+          ) {
+
+            <article
+              class="popular-row"
+              [class.active]="isCurrentSong(song)"
+              (dblclick)="playSong(index)"
+            >
+
+              <div class="popular-number">
+
+                @if (isPlaying(song)) {
+                  ♪
+                } @else {
+                  {{ index + 1 }}
+                }
+
+              </div>
+
+              <div class="popular-artwork">
+
+                @if (song.coverImage) {
+                  <img
+                    [src]="song.coverImage"
+                    [alt]="song.title"
+                  />
+                } @else {
+                  <div class="release-placeholder">
+                    ♪
+                  </div>
+                }
+
+                <button
+                  type="button"
+                  class="row-play-button"
+                  (click)="playSong(index); $event.stopPropagation()"
+                  [attr.aria-label]="'Play ' + song.title"
+                >
+                  @if (isPlaying(song)) {
+                    Ⅱ
+                  } @else {
+                    ▶
+                  }
+                </button>
+
+              </div>
+
+              <div class="popular-song">
+
+                <h3>{{ song.title }}</h3>
+
+                <div class="popular-artists">
+
+                  @for (
+                    artist of getArtists(song.artist);
+                    track artist;
+                    let last = $last
+                  ) {
+
+                    <button
+                      type="button"
+                      class="popular-artist-link"
+                      (click)="openArtist(artist); $event.stopPropagation()"
+                      [attr.aria-label]="'Open artist ' + artist"
+                    >
+                      {{ artist }}
+                    </button>
+
+                    @if (!last) {
+                      <span class="artist-separator">
+                        •
+                      </span>
+                    }
+
+                  }
+
+                </div>
+
+              </div>
+
+              <button
+                type="button"
+                class="popular-album"
+                (click)="openAlbum(song.album, song.artist); $event.stopPropagation()"
+                [attr.aria-label]="'Open album ' + song.album"
+              >
+                {{ song.album }}
+              </button>
+
+              <div class="popular-year">
+                {{ song.releaseYear }}
+              </div>
+
+              <div class="popular-genre">
+                {{ song.genre }}
+              </div>
+
+              <button
+                type="button"
+                class="popular-like"
+                [class.liked]="isLiked(song)"
+                (click)="toggleLike(song); $event.stopPropagation()"
+                [attr.aria-label]="'Like ' + song.title"
+              >
+                @if (isLiked(song)) {
+                  ♥
+                } @else {
+                  ♡
+                }
+              </button>
+
+              <button
+                type="button"
+                class="popular-more"
+                aria-label="More options"
+                (click)="$event.stopPropagation()"
+              >
+                ⋮
+              </button>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+    <!-- ==================== ARTIST COLLECTIONS ==================== -->
+
+    @if (
+      isFeaturedMixArtist() &&
+      artistCollections().length > 0
+    ) {
+
+      <section class="discography-section">
+
+        <div class="artist-section-header">
+
+          <div>
+            <span class="section-eyebrow">
+              MADE FOR YOU
+            </span>
+
+            <h2>
+              More from {{ artistName() }}
+            </h2>
+          </div>
+
+        </div>
+
+        <div class="release-grid">
+
+          @for (
+            collection of artistCollections();
+            track collection.id
+          ) {
+
+            <article
+              class="release-card"
+              tabindex="0"
+              (keydown.enter)="playCollection(collection)"
+            >
+
+              <div class="release-artwork-wrapper">
+
+                @if (collection.image) {
+
+                  <img
+                    class="release-artwork"
+                    [src]="collection.image"
+                    [alt]="collection.title"
+                  />
+
+                } @else {
+
+                  <div class="release-artwork release-placeholder">
+                    ♪
+                  </div>
+
+                }
+
+                <button
+                  type="button"
+                  class="release-play-overlay"
+                  (click)="playCollection(collection); $event.stopPropagation()"
+                  [attr.aria-label]="'Play ' + collection.title"
+                >
+                  <span class="release-play-icon">
+                    ▶
+                  </span>
+                </button>
+
+              </div>
+
+              <div class="release-info">
+
+                <h3>
+                  {{ collection.title }}
+                </h3>
+
+                <p>
+                  {{ collection.subtitle }}
+                </p>
+
+                <span>
+                  {{ collection.songs.length }} songs
+                </span>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+    <!-- ==================== DISCOGRAPHY ==================== -->
+
+    @if (releases().length > 0) {
+
+      <section class="discography-section">
+
+        <div class="artist-section-header">
+
+          <div>
+            <span class="section-eyebrow">
+              MUSIC
+            </span>
+
+            <h2>
+              Discography
+            </h2>
+          </div>
+
+          <span class="section-count">
+            {{ releases().length }} releases
+          </span>
+
+        </div>
+
+        <div class="release-grid">
+
+          @for (
+            release of releases();
+            track release.albumName
+          ) {
+
+            <article
+              class="release-card"
+              tabindex="0"
+              (click)="openAlbum(release.albumName, release.artistName)"
+              (keydown.enter)="openAlbum(release.albumName, release.artistName)"
+            >
+
+              <div class="release-artwork-wrapper">
+
+                @if (release.artwork) {
+
+                  <img
+                    class="release-artwork"
+                    [src]="release.artwork"
+                    [alt]="release.albumName"
+                  />
+
+                } @else {
+
+                  <div class="release-artwork release-placeholder">
+                    ♪
+                  </div>
+
+                }
+
+                <div class="release-play-overlay">
+                  <span class="release-play-icon">
+                    ▶
+                  </span>
+                </div>
+
+              </div>
+
+              <div class="release-info">
+
+                <h3>
+                  {{ release.albumName }}
+                </h3>
+
+                <p>
+                  {{ release.year }}
+                  •
+                  {{ release.artistName }}
+                </p>
+
+                <span>
+                  {{ release.genre }}
+                </span>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+    <!-- ==================== EMPTY STATE ==================== -->
+
+    @if (
+      songs().length === 0 &&
+      releases().length === 0
+    ) {
+
+      <div class="artist-state artist-empty">
+
+        <div class="state-icon">
+          ♪
+        </div>
+
+        <h2>No music found</h2>
+
+        <p>
+          We could not find playable tracks for this artist.
+        </p>
+
+      </div>
+
+    }
+
+  }
+
+</div>

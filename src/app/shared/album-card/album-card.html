@@ -1,0 +1,59 @@
+<article
+  class="album-card"
+  tabindex="0"
+  role="button"
+  [attr.aria-label]="'Open ' + album.title"
+  (click)="openAlbum()"
+  (keydown.enter)="openAlbum()"
+>
+
+  <div class="album-artwork-wrapper">
+
+    @if (album.image) {
+      <img
+        class="album-artwork"
+        [src]="album.image"
+        [alt]="album.title"
+        loading="lazy"
+      />
+    } @else {
+      <div class="album-placeholder">
+        <span>♫</span>
+      </div>
+    }
+
+    <div class="album-overlay"></div>
+
+    <button
+      type="button"
+      class="album-play-button"
+      [class.playing]="isPlaying"
+      [attr.aria-label]="
+        isPlaying
+          ? 'Pause ' + album.title
+          : 'Play ' + album.title
+      "
+      (click)="playAlbum($event)"
+    >
+      @if (isPlaying) {
+        <span class="pause-icon">Ⅱ</span>
+      } @else {
+        <span class="play-icon">▶</span>
+      }
+    </button>
+
+  </div>
+
+  <div class="album-info">
+
+    <h3 [title]="album.title">
+      {{ album.title }}
+    </h3>
+
+    <p [title]="getSubtitle()">
+      {{ getSubtitle() }}
+    </p>
+
+  </div>
+
+</article>

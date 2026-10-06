@@ -1,0 +1,883 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.artist-page {
+  min-height: 100%;
+  padding-bottom: 100px;
+  background:
+    radial-gradient(
+      circle at 25% 5%,
+      rgba(212, 175, 55, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #161616 0%,
+      #0d0d0d 52%,
+      #090909 100%
+    );
+  color: #ffffff;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.artist-hero {
+  position: relative;
+  min-height: 340px;
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  padding: 42px 34px 34px;
+  overflow: hidden;
+}
+
+.artist-hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 18% 28%,
+      rgba(212, 175, 55, 0.22),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(0, 0, 0, 0.12)
+    );
+  pointer-events: none;
+}
+
+.artist-image-wrapper {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.artist-image {
+  width: 220px;
+  height: 220px;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.artist-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(
+      135deg,
+      #252525,
+      #111111
+    );
+  color: #d4af37;
+  font-size: 68px;
+  font-weight: 900;
+}
+
+.artist-hero-content {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  padding-bottom: 8px;
+}
+
+.verified-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+}
+
+.verified-icon {
+  width: 21px;
+  height: 21px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #d4af37;
+  color: #080808;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.artist-hero-content h1 {
+  margin: 0;
+  max-width: 100%;
+  color: #ffffff;
+  font-size: clamp(44px, 7vw, 90px);
+  font-weight: 950;
+  line-height: 0.98;
+  letter-spacing: -3px;
+  overflow-wrap: anywhere;
+}
+
+.artist-meta {
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.artist-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 34px 18px;
+}
+
+.artist-play-button {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: #d4af37;
+  color: #090909;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow:
+    0 12px 30px rgba(212, 175, 55, 0.18);
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.artist-play-button:hover:not(:disabled) {
+  transform: scale(1.06);
+  background: #e3c45a;
+}
+
+.artist-play-button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.follow-button {
+  min-width: 92px;
+  height: 38px;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: transparent;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.follow-button:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.follow-button.following {
+  border-color: rgba(212, 175, 55, 0.55);
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+}
+
+.artist-more-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 21px;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.artist-more-button:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.popular-section,
+.discography-section {
+  padding: 14px 34px 0;
+}
+
+.discography-section {
+  padding-top: 40px;
+}
+
+.artist-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: #d4af37;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.artist-section-header h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.7px;
+}
+
+.section-count {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   POPULAR LIST
+   ========================================================= */
+
+.popular-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.popular-row {
+  min-height: 68px;
+  display: grid;
+  grid-template-columns:
+    34px
+    52px
+    minmax(170px, 1.5fr)
+    minmax(170px, 1.2fr)
+    70px
+    minmax(100px, 0.7fr)
+    42px
+    34px;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.popular-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.popular-row.active {
+  background: rgba(212, 175, 55, 0.07);
+  border-color: rgba(212, 175, 55, 0.15);
+}
+
+.popular-number {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.popular-row.active .popular-number {
+  color: #d4af37;
+}
+
+.popular-artwork {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #222222;
+}
+
+.popular-artwork img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.row-play-button {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 16px;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+
+.popular-row:hover .row-play-button,
+.popular-row.active .row-play-button {
+  opacity: 1;
+}
+
+.popular-song {
+  min-width: 0;
+}
+
+.popular-song h3 {
+  margin: 0;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.popular-row.active .popular-song h3 {
+  color: #d4af37;
+}
+
+/* =========================================================
+   CLICKABLE ARTISTS
+   ========================================================= */
+
+.popular-artists {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.popular-artist-link {
+  flex-shrink: 0;
+  max-width: 145px;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    color 0.18s ease;
+}
+
+.popular-artist-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: #d4af37;
+  text-underline-offset: 3px;
+}
+
+.artist-separator {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 8px;
+}
+
+/* =========================================================
+   ALBUM / META
+   ========================================================= */
+
+.popular-album {
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 12px;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.popular-album:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: #d4af37;
+  text-underline-offset: 3px;
+}
+
+.popular-year,
+.popular-genre {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.popular-like,
+.popular-more {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.popular-like {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 19px;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.popular-like:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  transform: scale(1.08);
+}
+
+.popular-like.liked {
+  color: #d4af37;
+}
+
+.popular-more {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 19px;
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.popular-row:hover .popular-more,
+.popular-row.active .popular-more {
+  opacity: 1;
+}
+
+.popular-more:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+/* =========================================================
+   DISCOGRAPHY
+   ========================================================= */
+
+.release-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.release-card {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.release-card:hover,
+.release-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(212, 175, 55, 0.16);
+  background: rgba(255, 255, 255, 0.055);
+  outline: none;
+}
+
+.release-artwork-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #1a1a1a;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+.release-artwork {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+}
+
+.release-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(
+      135deg,
+      #282828,
+      #111111
+    );
+  color: #d4af37;
+  font-size: 42px;
+  font-weight: 900;
+}
+
+.release-card:hover .release-artwork {
+  transform: scale(1.035);
+  filter: brightness(0.78);
+}
+
+.release-play-overlay {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #d4af37;
+  color: #0b0b0b;
+  opacity: 0;
+  transform: translateY(8px);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.35);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.release-card:hover .release-play-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.release-play-overlay:hover {
+  background: #e3c45a;
+}
+
+.release-play-icon {
+  margin-left: 2px;
+  font-size: 17px;
+}
+
+.release-info {
+  padding: 13px 3px 5px;
+}
+
+.release-info h3 {
+  margin: 0;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.release-info p {
+  margin: 7px 0 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
+  font-weight: 550;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.release-info span {
+  display: block;
+  margin-top: 5px;
+  overflow: hidden;
+  color: rgba(212, 175, 55, 0.68);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   STATES
+   ========================================================= */
+
+.artist-state {
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 35px;
+  text-align: center;
+}
+
+.artist-state h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.artist-state p {
+  margin: 9px 0 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 13px;
+}
+
+.artist-loader {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.11);
+  border-top-color: #d4af37;
+  border-radius: 50%;
+  animation:
+    artist-spin 0.75s linear infinite;
+}
+
+@keyframes artist-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.state-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.08);
+  color: #d4af37;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.artist-empty {
+  min-height: 280px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1250px) {
+
+  .release-grid {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+
+  .popular-row {
+    grid-template-columns:
+      30px
+      52px
+      minmax(160px, 1.4fr)
+      minmax(140px, 1fr)
+      64px
+      40px
+      32px;
+  }
+
+  .popular-genre {
+    display: none;
+  }
+
+}
+
+@media (max-width: 1000px) {
+
+  .artist-hero {
+    min-height: 300px;
+    padding:
+      32px 24px 28px;
+  }
+
+  .artist-image {
+    width: 180px;
+    height: 180px;
+  }
+
+  .artist-actions,
+  .popular-section,
+  .discography-section {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .release-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .popular-row {
+    grid-template-columns:
+      30px
+      50px
+      minmax(150px, 1fr)
+      minmax(120px, 0.8fr)
+      40px
+      32px;
+  }
+
+  .popular-year,
+  .popular-genre {
+    display: none;
+  }
+
+}
+
+@media (max-width: 760px) {
+
+  .artist-hero {
+    min-height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding:
+      28px 18px 24px;
+  }
+
+  .artist-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .artist-hero-content h1 {
+    font-size: 44px;
+    letter-spacing: -1.8px;
+  }
+
+  .artist-actions,
+  .popular-section,
+  .discography-section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .release-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .popular-row {
+    grid-template-columns:
+      48px
+      minmax(0, 1fr)
+      38px
+      30px;
+    gap: 10px;
+    padding: 8px;
+  }
+
+  .popular-number,
+  .popular-album,
+  .popular-year,
+  .popular-genre {
+    display: none;
+  }
+
+  .popular-artwork {
+    width: 48px;
+    height: 48px;
+  }
+
+  .popular-more {
+    opacity: 1;
+  }
+
+  .popular-artist-link {
+    max-width: 120px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .artist-image {
+    width: 130px;
+    height: 130px;
+  }
+
+  .artist-hero-content h1 {
+    font-size: 36px;
+  }
+
+  .release-grid {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .release-card {
+    padding: 9px;
+  }
+
+}

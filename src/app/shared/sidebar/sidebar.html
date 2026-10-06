@@ -1,0 +1,220 @@
+<div class="sidebar">
+
+  <!-- BRAND -->
+  <div class="brand">
+    <div class="brand-icon">Z</div>
+
+    <div class="brand-text">
+      <span class="brand-name">ZUNO</span>
+      <span class="brand-subtitle">Music everywhere</span>
+    </div>
+  </div>
+
+  <!-- PRIMARY NAVIGATION -->
+  <nav class="main-navigation">
+
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="nav-item"
+    >
+      <span class="nav-icon">⌂</span>
+      <span class="nav-label">Home</span>
+    </a>
+
+    <a
+      routerLink="/search"
+      routerLinkActive="active"
+      class="nav-item"
+    >
+      <span class="nav-icon">⌕</span>
+      <span class="nav-label">Search</span>
+    </a>
+
+  </nav>
+
+  <!-- LIBRARY HEADER -->
+  <div class="library-header">
+
+    <a
+      routerLink="/library"
+      routerLinkActive="active-library"
+      class="library-title"
+    >
+      <span class="library-title-icon">▣</span>
+      <span>Your Library</span>
+    </a>
+
+    <div class="library-header-actions">
+
+      <button
+        type="button"
+        class="library-action-button"
+        aria-label="Create playlist"
+        title="Create playlist"
+        (click)="createPlaylist()"
+      >
+        +
+      </button>
+
+      <a
+        routerLink="/library"
+        class="library-action-button"
+        aria-label="Open library"
+        title="Open library"
+      >
+        →
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- LIBRARY FILTERS -->
+  <div class="library-filters">
+
+    <button
+      type="button"
+      class="filter-pill active-filter"
+    >
+      Playlists
+    </button>
+
+    <button
+      type="button"
+      class="filter-pill"
+    >
+      Artists
+    </button>
+
+    <button
+      type="button"
+      class="filter-pill"
+    >
+      Albums
+    </button>
+
+  </div>
+
+  <!-- LIBRARY SEARCH / SORT -->
+  <div class="library-tools">
+
+    <button
+      type="button"
+      class="library-search-button"
+      aria-label="Search your library"
+    >
+      ⌕
+    </button>
+
+    <button
+      type="button"
+      class="library-sort-button"
+    >
+      <span>Recents</span>
+      <span class="sort-arrow">▾</span>
+    </button>
+
+  </div>
+
+  <!-- LIBRARY LIST -->
+  <div class="library-list">
+
+    <!-- LIKED SONGS -->
+    <a
+      routerLink="/liked-songs"
+      routerLinkActive="selected"
+      class="library-item"
+    >
+      <div class="library-cover liked-cover">
+        <span>♥</span>
+      </div>
+
+      <div class="library-item-info">
+        <div class="library-item-name">
+          Liked Songs
+        </div>
+
+        <div class="library-item-meta">
+          Playlist • Your liked songs
+        </div>
+      </div>
+    </a>
+
+    <!-- DYNAMIC PLAYLISTS -->
+    @for (playlist of playlists; track playlist.id) {
+
+      <a
+        [routerLink]="['/playlist', playlist.id]"
+        routerLinkActive="selected"
+        class="library-item"
+      >
+        <div class="library-cover playlist-cover">
+
+          @if (playlist.coverImage) {
+            <img
+              [src]="playlist.coverImage"
+              [alt]="playlist.name"
+            />
+          } @else {
+            <span>
+              {{ getPlaylistInitials(playlist.name) }}
+            </span>
+          }
+
+        </div>
+
+        <div class="library-item-info">
+
+          <div class="library-item-name">
+            {{ playlist.name }}
+          </div>
+
+          <div class="library-item-meta">
+            Playlist •
+            {{ playlist.songIds.length }}
+            {{
+              playlist.songIds.length === 1
+                ? 'song'
+                : 'songs'
+            }}
+          </div>
+
+        </div>
+      </a>
+
+    } @empty {
+
+      <div class="library-empty">
+        <span>♪</span>
+        <p>No playlists yet</p>
+      </div>
+
+    }
+
+    <!-- FAVOURITE ARTIST -->
+    <a
+      routerLink="/artist"
+      [queryParams]="{ name: 'Anirudh Ravichander' }"
+      routerLinkActive="selected"
+      class="library-item"
+    >
+      <div class="library-cover artist-cover">
+        <span>A</span>
+      </div>
+
+      <div class="library-item-info">
+        <div class="library-item-name">
+          Favourite Artist
+        </div>
+
+        <div class="library-item-meta">
+          Artist
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+</div>

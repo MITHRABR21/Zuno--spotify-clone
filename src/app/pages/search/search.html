@@ -1,0 +1,616 @@
+<div class="search-page">
+
+  <section class="search-header">
+
+    <div class="search-title">
+      <span class="search-label">
+        DISCOVER
+      </span>
+
+      <h1>Search</h1>
+
+      <p>
+        Search songs, artists, albums and music from around the world.
+      </p>
+    </div>
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        type="text"
+        placeholder="What do you want to listen to?"
+        [value]="query()"
+        (input)="onSearch($event)"
+        autocomplete="off"
+      />
+
+      @if (query()) {
+
+        <button
+          type="button"
+          class="clear-search"
+          (click)="query.set(''); onSearch($event)"
+          aria-label="Clear search"
+        >
+          ×
+        </button>
+
+      }
+
+    </div>
+
+  </section>
+
+  @if (!query().trim()) {
+
+    <section class="browse-section">
+
+      <div class="section-heading">
+        <div>
+          <span>EXPLORE</span>
+          <h2>Browse all</h2>
+        </div>
+      </div>
+
+      <div class="browse-grid">
+
+        <button
+          type="button"
+          class="browse-card tamil-card"
+          (click)="searchCategory('Tamil')"
+        >
+          <div>
+            <span>TAMIL</span>
+            <h3>Tamil Hits</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ♪
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="browse-card english-card"
+          (click)="searchCategory('English')"
+        >
+          <div>
+            <span>ENGLISH</span>
+            <h3>English Hits</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ♫
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="browse-card hindi-card"
+          (click)="searchCategory('Hindi')"
+        >
+          <div>
+            <span>HINDI</span>
+            <h3>Hindi Hits</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ♪
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="browse-card pop-card"
+          (click)="searchCategory('Pop')"
+        >
+          <div>
+            <span>GENRE</span>
+            <h3>Pop</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ♫
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="browse-card romantic-card"
+          (click)="searchCategory('Romantic')"
+        >
+          <div>
+            <span>MOOD</span>
+            <h3>Romantic</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ♥
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="browse-card workout-card"
+          (click)="searchCategory('Workout')"
+        >
+          <div>
+            <span>MOOD</span>
+            <h3>Workout</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ⚡
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="browse-card chill-card"
+          (click)="searchCategory('Chill')"
+        >
+          <div>
+            <span>MOOD</span>
+            <h3>Chill</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ☾
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="browse-card classics-card"
+          (click)="searchCategory('Classical')"
+        >
+          <div>
+            <span>GENRE</span>
+            <h3>Classical</h3>
+          </div>
+
+          <span class="browse-symbol">
+            ♬
+          </span>
+        </button>
+
+      </div>
+
+    </section>
+
+  } @else {
+
+    <section class="results-section">
+
+      <div class="section-heading">
+
+        <div>
+          <span>SEARCH RESULTS</span>
+
+          <h2>
+            Results for "{{ query() }}"
+          </h2>
+        </div>
+
+        @if (!isLoading() && results().length > 0) {
+
+          <span class="result-count">
+            {{ results().length }} tracks
+          </span>
+
+        }
+
+      </div>
+
+      @if (isLoading()) {
+
+        <div class="search-loading">
+
+          <div class="loading-spinner"></div>
+
+          <h3>Searching ZUNO</h3>
+
+          <p>
+            Finding music for "{{ query() }}"
+          </p>
+
+        </div>
+
+      } @else if (searchError()) {
+
+        <div class="search-state error-state">
+
+          <div class="state-icon">
+            !
+          </div>
+
+          <h3>
+            Search unavailable
+          </h3>
+
+          <p>
+            {{ searchError() }}
+          </p>
+
+        </div>
+
+      } @else if (results().length > 0) {
+
+        <div class="results-table">
+
+          <div class="results-header">
+
+            <div>#</div>
+
+            <div>Title</div>
+
+            <div>Album</div>
+
+            <div>Region</div>
+
+            <div>Genre</div>
+
+            <div></div>
+
+          </div>
+
+          @for (
+            song of results();
+            track song.id;
+            let index = $index
+          ) {
+
+            <article
+              class="result-row"
+              [class.current]="isCurrentSong(song)"
+            >
+
+              <div class="result-number">
+
+                @if (isPlaying(song)) {
+
+                  <span class="playing-indicator">
+                    ♪
+                  </span>
+
+                } @else {
+
+                  <span class="track-index">
+                    {{ index + 1 }}
+                  </span>
+
+                }
+
+              </div>
+
+              <div class="result-main">
+
+                <button
+                  type="button"
+                  class="result-cover"
+                  (click)="playResultQueue(index)"
+                  [attr.aria-label]="'Play ' + song.title"
+                >
+
+                  <img
+                    [src]="song.coverImage"
+                    [alt]="song.title"
+                  />
+
+                  <span class="cover-play">
+
+                    @if (isPlaying(song)) {
+                      ❚❚
+                    } @else {
+                      ▶
+                    }
+
+                  </span>
+
+                </button>
+
+                <div class="result-text">
+
+                  <button
+                    type="button"
+                    class="song-title"
+                    (click)="playResultQueue(index)"
+                  >
+                    {{ song.title }}
+                  </button>
+
+                  <div class="artist-list">
+
+                    @for (
+                      artist of getArtists(song.artist);
+                      track artist;
+                      let last = $last
+                    ) {
+
+                      <button
+                        type="button"
+                        class="artist-link"
+                        (click)="openArtist(artist)"
+                      >
+                        {{ artist }}
+                      </button>
+
+                      @if (!last) {
+                        <span class="artist-separator">
+                          ,
+                        </span>
+                      }
+
+                    }
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <button
+                type="button"
+                class="album-link"
+                (click)="openAlbum(
+                  song.album,
+                  song.artist
+                )"
+                [title]="song.album"
+              >
+                {{ song.album }}
+              </button>
+
+              <div class="song-region">
+                {{ song.language }}
+              </div>
+
+              <div class="song-genre">
+                {{ song.genre }}
+              </div>
+
+              <div class="result-actions">
+
+                <button
+                  type="button"
+                  class="like-button"
+                  [class.liked]="isLiked(song)"
+                  (click)="toggleLike(song)"
+                  [attr.aria-label]="
+                    isLiked(song)
+                      ? 'Remove from Liked Songs'
+                      : 'Add to Liked Songs'
+                  "
+                  [title]="
+                    isLiked(song)
+                      ? 'Remove from Liked Songs'
+                      : 'Add to Liked Songs'
+                  "
+                >
+                  ♥
+                </button>
+
+                <div class="playlist-action-wrapper">
+
+                  <button
+                    type="button"
+                    class="playlist-button"
+                    [class.active]="isPlaylistMenuOpen(song)"
+                    (click)="togglePlaylistMenu(
+                      song,
+                      $event
+                    )"
+                    title="Add to playlist"
+                    aria-label="Add to playlist"
+                  >
+                    ＋
+                  </button>
+
+                  @if (isPlaylistMenuOpen(song)) {
+
+                    <div
+                      class="playlist-menu"
+                      (click)="$event.stopPropagation()"
+                    >
+
+                      <div class="playlist-menu-header">
+
+                        <div>
+                          <span>
+                            ADD TO PLAYLIST
+                          </span>
+
+                          <h4>
+                            Choose a playlist
+                          </h4>
+                        </div>
+
+                        <button
+                          type="button"
+                          class="playlist-menu-close"
+                          (click)="closePlaylistMenu()"
+                        >
+                          ×
+                        </button>
+
+                      </div>
+
+                      <button
+                        type="button"
+                        class="create-playlist-option"
+                        (click)="createPlaylistForSong(
+                          song,
+                          $event
+                        )"
+                      >
+
+                        <span class="playlist-option-icon">
+                          ＋
+                        </span>
+
+                        <span>
+                          <strong>
+                            Create new playlist
+                          </strong>
+
+                          <small>
+                            Add this song automatically
+                          </small>
+                        </span>
+
+                      </button>
+
+                      <div class="playlist-menu-divider"></div>
+
+                      @if (playlists.length > 0) {
+
+                        <div class="playlist-options">
+
+                          @for (
+                            playlist of playlists;
+                            track playlist.id
+                          ) {
+
+                            <button
+                              type="button"
+                              class="playlist-option"
+                              [class.selected]="
+                                isSongInPlaylist(
+                                  song,
+                                  playlist.id
+                                )
+                              "
+                              (click)="addToPlaylist(
+                                song,
+                                playlist.id,
+                                $event
+                              )"
+                            >
+
+                              <div class="playlist-option-cover">
+
+                                @if (playlist.coverImage) {
+
+                                  <img
+                                    [src]="playlist.coverImage"
+                                    [alt]="playlist.name"
+                                  />
+
+                                } @else {
+
+                                  <span>
+                                    ♪
+                                  </span>
+
+                                }
+
+                              </div>
+
+                              <div class="playlist-option-info">
+
+                                <strong>
+                                  {{ playlist.name }}
+                                </strong>
+
+                                <small>
+                                  {{ playlist.songIds.length }}
+                                  {{
+                                    playlist.songIds.length === 1
+                                      ? 'song'
+                                      : 'songs'
+                                  }}
+                                </small>
+
+                              </div>
+
+                              <div class="playlist-check">
+
+                                @if (
+                                  isSongInPlaylist(
+                                    song,
+                                    playlist.id
+                                  )
+                                ) {
+                                  ✓
+                                } @else {
+                                  ＋
+                                }
+
+                              </div>
+
+                            </button>
+
+                          }
+
+                        </div>
+
+                      } @else {
+
+                        <div class="no-playlists">
+
+                          <span>♪</span>
+
+                          <p>
+                            You don't have any playlists yet.
+                          </p>
+
+                        </div>
+
+                      }
+
+                    </div>
+
+                  }
+
+                </div>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+        <div class="catalog-note">
+
+          <span>
+            ZUNO
+          </span>
+
+          <p>
+            Search results use online catalog data.
+            Playback availability depends on the preview provided for each track.
+          </p>
+
+        </div>
+
+      } @else {
+
+        <div class="search-state">
+
+          <div class="state-icon">
+            ⌕
+          </div>
+
+          <h3>
+            No results found
+          </h3>
+
+          <p>
+            Try searching for another song, artist or album.
+          </p>
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+</div>

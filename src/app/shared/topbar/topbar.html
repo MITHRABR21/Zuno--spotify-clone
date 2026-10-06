@@ -1,0 +1,110 @@
+<header class="topbar">
+
+  <div class="navigation-controls">
+
+    <a
+      routerLink="/"
+      class="navigation-button home-navigation-button"
+      aria-label="Go to ZUNO Home"
+      title="Home"
+    >
+      <span>⌂</span>
+    </a>
+
+    <button
+      type="button"
+      class="navigation-button"
+      aria-label="Go back"
+      title="Back"
+      (click)="goBack()"
+    >
+      <span>‹</span>
+    </button>
+
+    <button
+      type="button"
+      class="navigation-button"
+      aria-label="Go forward"
+      title="Forward"
+      (click)="goForward()"
+    >
+      <span>›</span>
+    </button>
+
+  </div>
+
+
+  <div class="search-area">
+
+    <div
+      class="search-box"
+      (click)="openSearch()"
+    >
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        type="text"
+        class="topbar-search-input"
+        placeholder="What do you want to listen to?"
+        aria-label="Search ZUNO"
+        (input)="onSearchInput($event)"
+        (click)="$event.stopPropagation()"
+      />
+
+    </div>
+
+  </div>
+
+
+  <div class="topbar-actions">
+
+    <button
+      type="button"
+      class="premium-button"
+    >
+      Explore Premium
+    </button>
+
+    <button
+      type="button"
+      class="install-button"
+    >
+      <span class="install-icon">↓</span>
+      <span>Install App</span>
+    </button>
+
+    <a
+      routerLink="/library"
+      class="icon-button"
+      aria-label="Your library"
+      title="Your Library"
+    >
+      ♫
+    </a>
+
+    <button
+      type="button"
+      class="icon-button"
+      aria-label="Notifications"
+      title="Notifications"
+    >
+      ♧
+    </button>
+
+    <button
+      type="button"
+      class="profile-button"
+      aria-label="Open profile"
+      title="Profile"
+    >
+      <span class="profile-avatar">
+        R
+      </span>
+    </button>
+
+  </div>
+
+</header>

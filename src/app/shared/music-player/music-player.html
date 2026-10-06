@@ -1,0 +1,913 @@
+<!-- =========================================================
+     ZUNO NOW PLAYING SIDE PANEL
+     ========================================================= -->
+
+@if (showNowPlaying() && musicService.currentSong(); as song) {
+  <aside class="now-playing-panel">
+
+    <div class="now-playing-panel-header">
+
+      <div class="now-playing-header-text">
+        <span class="now-playing-eyebrow">
+          ZUNO
+        </span>
+
+        <h2>Now playing</h2>
+      </div>
+
+      <button
+        type="button"
+        class="now-playing-close-button"
+        aria-label="Close now playing"
+        title="Close now playing"
+        (click)="closeNowPlaying()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="now-playing-panel-content">
+
+      <div class="now-playing-artwork-container">
+
+        <img
+          class="now-playing-artwork"
+          [src]="song.coverImage"
+          [alt]="song.title"
+        />
+
+        <div class="now-playing-artwork-glow"></div>
+
+      </div>
+
+      <div class="now-playing-song-header">
+
+        <div class="now-playing-title-area">
+
+          <span class="now-playing-status">
+            NOW PLAYING
+          </span>
+
+          <h1>
+            {{ song.title }}
+          </h1>
+
+          <p class="now-playing-artist">
+            {{ song.artist }}
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="now-playing-like-button"
+          [class.active]="song.isLiked"
+          [attr.aria-label]="
+            song.isLiked
+              ? 'Remove from liked songs'
+              : 'Add to liked songs'
+          "
+          [title]="
+            song.isLiked
+              ? 'Remove from liked songs'
+              : 'Add to liked songs'
+          "
+          (click)="musicService.toggleLike(song)"
+        >
+          @if (song.isLiked) {
+            ♥
+          } @else {
+            ♡
+          }
+        </button>
+
+      </div>
+
+      <div class="now-playing-meta">
+
+        @if (song.album) {
+          <div class="now-playing-meta-row">
+
+            <span class="now-playing-meta-label">
+              Album
+            </span>
+
+            <span class="now-playing-meta-value">
+              {{ song.album }}
+            </span>
+
+          </div>
+        }
+
+        @if (song.genre) {
+          <div class="now-playing-meta-row">
+
+            <span class="now-playing-meta-label">
+              Genre
+            </span>
+
+            <span class="now-playing-meta-value">
+              {{ song.genre }}
+            </span>
+
+          </div>
+        }
+
+        @if (song.releaseYear) {
+          <div class="now-playing-meta-row">
+
+            <span class="now-playing-meta-label">
+              Released
+            </span>
+
+            <span class="now-playing-meta-value">
+              {{ song.releaseYear }}
+            </span>
+
+          </div>
+        }
+
+        @if (song.language) {
+          <div class="now-playing-meta-row">
+
+            <span class="now-playing-meta-label">
+              Region
+            </span>
+
+            <span class="now-playing-meta-value">
+              {{ song.language }}
+            </span>
+
+          </div>
+        }
+
+      </div>
+
+      <div class="now-playing-progress-section">
+
+        <input
+          class="now-playing-progress-bar"
+          type="range"
+          min="0"
+          [max]="musicService.duration() || 0"
+          [value]="musicService.currentTime()"
+          [style.background]="
+            'linear-gradient(to right, #d4af37 0%, #d4af37 ' +
+            getProgressPercentage() +
+            '%, #383838 ' +
+            getProgressPercentage() +
+            '%, #383838 100%)'
+          "
+          (input)="onSeek($event)"
+          aria-label="Now playing progress"
+        />
+
+        <div class="now-playing-times">
+
+          <span>
+            {{ formatTime(musicService.currentTime()) }}
+          </span>
+
+          <span>
+            {{ formatTime(musicService.duration()) }}
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="now-playing-controls">
+
+        <button
+          type="button"
+          class="now-playing-secondary-control"
+          [class.active]="musicService.isShuffleEnabled()"
+          [attr.aria-pressed]="musicService.isShuffleEnabled()"
+          aria-label="Shuffle"
+          title="Shuffle"
+          (click)="musicService.toggleShuffle()"
+        >
+          ⤨
+        </button>
+
+        <button
+          type="button"
+          class="now-playing-secondary-control"
+          aria-label="Previous song"
+          title="Previous"
+          (click)="musicService.previousSong()"
+        >
+          ◀◀
+        </button>
+
+        <button
+          type="button"
+          class="now-playing-play-button"
+          aria-label="Play or pause"
+          title="Play / Pause"
+          (click)="musicService.togglePlayPause()"
+        >
+          @if (musicService.isPlaying()) {
+            <span>Ⅱ</span>
+          } @else {
+            <span>▶</span>
+          }
+        </button>
+
+        <button
+          type="button"
+          class="now-playing-secondary-control"
+          aria-label="Next song"
+          title="Next"
+          (click)="musicService.nextSong()"
+        >
+          ▶▶
+        </button>
+
+        <button
+          type="button"
+          class="now-playing-secondary-control"
+          [class.active]="musicService.isRepeatEnabled()"
+          [attr.aria-pressed]="musicService.isRepeatEnabled()"
+          aria-label="Repeat"
+          title="Repeat"
+          (click)="musicService.toggleRepeat()"
+        >
+          ↻
+        </button>
+
+      </div>
+
+      @if (getUpcomingQueue().length > 0) {
+
+        <div class="now-playing-up-next">
+
+          <div class="now-playing-up-next-header">
+
+            <div>
+              <span>QUEUE</span>
+              <h3>Up next</h3>
+            </div>
+
+            <button
+              type="button"
+              class="now-playing-open-queue"
+              (click)="toggleQueue()"
+            >
+              Open queue
+            </button>
+
+          </div>
+
+          <button
+            type="button"
+            class="now-playing-next-song"
+            (click)="playQueueSong(getUpcomingQueue()[0])"
+          >
+
+            <img
+              [src]="getUpcomingQueue()[0].coverImage"
+              [alt]="getUpcomingQueue()[0].title"
+            />
+
+            <div class="now-playing-next-song-info">
+
+              <h4>
+                {{ getUpcomingQueue()[0].title }}
+              </h4>
+
+              <p>
+                {{ getUpcomingQueue()[0].artist }}
+              </p>
+
+            </div>
+
+            <span class="now-playing-next-icon">
+              ▶
+            </span>
+
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </aside>
+}
+
+<!-- =========================================================
+     ZUNO QUEUE SIDE PANEL
+     ========================================================= -->
+
+@if (showQueue()) {
+  <aside class="queue-panel">
+
+    <div class="queue-panel-header">
+
+      <div class="queue-tabs">
+
+        <button
+          type="button"
+          class="queue-tab active"
+        >
+          Queue
+        </button>
+
+        <button
+          type="button"
+          class="queue-tab"
+          disabled
+          title="Recently played coming next"
+        >
+          Recently played
+        </button>
+
+      </div>
+
+      <button
+        type="button"
+        class="queue-close-button"
+        aria-label="Close queue"
+        title="Close queue"
+        (click)="closeQueue()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="queue-panel-content">
+
+      @if (musicService.currentSong(); as currentSong) {
+
+        <section class="queue-section">
+
+          <h3 class="queue-section-title">
+            Now playing
+          </h3>
+
+          <button
+            type="button"
+            class="queue-song current"
+            (click)="playQueueSong(currentSong)"
+          >
+
+            <div class="queue-current-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <img
+              [src]="currentSong.coverImage"
+              [alt]="currentSong.title"
+              class="queue-song-art"
+            />
+
+            <div class="queue-song-info">
+
+              <h4>
+                {{ currentSong.title }}
+              </h4>
+
+              <p>
+                {{ currentSong.artist }}
+              </p>
+
+            </div>
+
+          </button>
+
+        </section>
+
+      }
+
+      <section class="queue-section queue-next-section">
+
+        <div class="queue-next-heading">
+
+          <h3 class="queue-section-title">
+            Next in queue
+          </h3>
+
+          <span class="queue-count">
+            {{ getUpcomingQueue().length }}
+          </span>
+
+        </div>
+
+        @if (getUpcomingQueue().length > 0) {
+
+          <div class="queue-list">
+
+            @for (
+              song of getUpcomingQueue();
+              track song.id
+            ) {
+
+              <button
+                type="button"
+                class="queue-song"
+                [class.current]="isCurrentQueueSong(song)"
+                (click)="playQueueSong(song)"
+              >
+
+                <span class="queue-song-position">
+                  {{ getQueuePosition(song) }}
+                </span>
+
+                <img
+                  [src]="song.coverImage"
+                  [alt]="song.title"
+                  class="queue-song-art"
+                />
+
+                <div class="queue-song-info">
+
+                  <h4>
+                    {{ song.title }}
+                  </h4>
+
+                  <p>
+                    {{ song.artist }}
+                  </p>
+
+                </div>
+
+                <span class="queue-song-play">
+                  ▶
+                </span>
+
+              </button>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="queue-empty">
+
+            <span class="queue-empty-icon">
+              ☷
+            </span>
+
+            <h3>
+              Nothing else in queue
+            </h3>
+
+            <p>
+              Choose another song to keep listening.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    </div>
+
+  </aside>
+}
+
+<!-- =========================================================
+     ZUNO LYRICS PANEL
+     ========================================================= -->
+
+@if (showLyrics() && musicService.currentSong(); as song) {
+  <section class="lyrics-panel">
+
+    <div class="lyrics-panel-header">
+
+      <div class="lyrics-heading">
+
+        <span class="lyrics-label">
+          ZUNO LYRICS
+        </span>
+
+        <h2>
+          {{ song.title }}
+        </h2>
+
+        <p>
+          {{ song.artist }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="lyrics-close-button"
+        aria-label="Close lyrics"
+        title="Close lyrics"
+        (click)="closeLyrics()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="lyrics-panel-content">
+
+      <div class="lyrics-song-card">
+
+        <img
+          [src]="song.coverImage"
+          [alt]="song.title"
+          class="lyrics-artwork"
+        />
+
+        <div class="lyrics-song-details">
+
+          <span>
+            NOW PLAYING
+          </span>
+
+          <h3>
+            {{ song.title }}
+          </h3>
+
+          <p>
+            {{ song.artist }}
+          </p>
+
+          @if (song.album) {
+            <small>
+              {{ song.album }}
+            </small>
+          }
+
+        </div>
+
+      </div>
+
+      <div class="lyrics-body">
+
+        <span class="lyrics-status">
+          LYRICS
+        </span>
+
+        @if (isLyricsLoading()) {
+
+          <div class="lyrics-placeholder">
+
+            <span class="lyrics-placeholder-icon">
+              ♪
+            </span>
+
+            <h3>
+              Finding lyrics for {{ song.title }}
+            </h3>
+
+            <p>
+              Searching for available lyrics...
+            </p>
+
+          </div>
+
+        } @else if (lyrics(); as result) {
+
+          <div class="lyrics-result">
+
+            <div class="lyrics-result-heading">
+
+              <span>
+                NOW PLAYING
+              </span>
+
+              <h3>
+                {{ song.title }}
+              </h3>
+
+              <p>
+                {{ song.artist }}
+              </p>
+
+            </div>
+
+            <div class="lyrics-text">
+              {{ result.lyrics }}
+            </div>
+
+          </div>
+
+        } @else if (lyricsError()) {
+
+          <div class="lyrics-placeholder">
+
+            <span class="lyrics-placeholder-icon">
+              ♪
+            </span>
+
+            <h3>
+              Lyrics unavailable
+            </h3>
+
+            <p>
+              {{ lyricsError() }}
+            </p>
+
+            <button
+              type="button"
+              class="lyrics-retry-button"
+              (click)="loadLyrics()"
+            >
+              Try again
+            </button>
+
+          </div>
+
+        } @else {
+
+          <div class="lyrics-placeholder">
+
+            <span class="lyrics-placeholder-icon">
+              ♪
+            </span>
+
+            <h3>
+              No lyrics loaded
+            </h3>
+
+            <p>
+              Play a song and open Lyrics to search for available lyrics.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  </section>
+}
+
+<!-- =========================================================
+     ZUNO MUSIC PLAYER
+     ========================================================= -->
+
+<div class="music-player">
+
+  <!-- =======================================================
+       LEFT — CURRENT SONG
+       ======================================================= -->
+
+  <div class="current-song">
+
+    @if (musicService.currentSong(); as song) {
+
+      <img
+        class="player-art"
+        [src]="song.coverImage"
+        [alt]="song.title"
+      />
+
+      <div class="player-song-info">
+
+        <h4>
+          {{ song.title }}
+        </h4>
+
+        <p>
+          {{ song.artist }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="like-button"
+        [class.active]="song.isLiked"
+        [attr.aria-label]="
+          song.isLiked
+            ? 'Remove from liked songs'
+            : 'Add to liked songs'
+        "
+        title="Like song"
+        (click)="musicService.toggleLike(song)"
+      >
+
+        @if (song.isLiked) {
+          ♥
+        } @else {
+          ♡
+        }
+
+      </button>
+
+    } @else {
+
+      <div class="player-art placeholder-art">
+        Z
+      </div>
+
+      <div class="player-song-info">
+
+        <h4>
+          Nothing playing
+        </h4>
+
+        <p>
+          Choose a song to start listening
+        </p>
+
+      </div>
+
+    }
+
+  </div>
+
+  <!-- =======================================================
+       CENTER — PLAYBACK
+       ======================================================= -->
+
+  <div class="player-controls">
+
+    <div class="control-buttons">
+
+      <button
+        type="button"
+        class="secondary-control"
+        [class.active]="musicService.isShuffleEnabled()"
+        [attr.aria-pressed]="musicService.isShuffleEnabled()"
+        aria-label="Shuffle"
+        title="Shuffle"
+        (click)="musicService.toggleShuffle()"
+      >
+        ⤨
+      </button>
+
+      <button
+        type="button"
+        class="secondary-control"
+        aria-label="Previous song"
+        title="Previous"
+        (click)="musicService.previousSong()"
+      >
+        ◀◀
+      </button>
+
+      <button
+        type="button"
+        class="play-button"
+        aria-label="Play or pause"
+        title="Play / Pause"
+        (click)="musicService.togglePlayPause()"
+      >
+
+        @if (musicService.isPlaying()) {
+          <span>Ⅱ</span>
+        } @else {
+          <span>▶</span>
+        }
+
+      </button>
+
+      <button
+        type="button"
+        class="secondary-control"
+        aria-label="Next song"
+        title="Next"
+        (click)="musicService.nextSong()"
+      >
+        ▶▶
+      </button>
+
+      <button
+        type="button"
+        class="secondary-control"
+        [class.active]="musicService.isRepeatEnabled()"
+        [attr.aria-pressed]="musicService.isRepeatEnabled()"
+        aria-label="Repeat"
+        title="Repeat"
+        (click)="musicService.toggleRepeat()"
+      >
+        ↻
+      </button>
+
+    </div>
+
+    <div class="progress-container">
+
+      <span class="time">
+        {{ formatTime(musicService.currentTime()) }}
+      </span>
+
+      <input
+        class="progress-bar"
+        type="range"
+        min="0"
+        [max]="musicService.duration() || 0"
+        [value]="musicService.currentTime()"
+        [disabled]="!musicService.currentSong()"
+        [style.background]="
+          'linear-gradient(to right, #d4af37 0%, #d4af37 ' +
+          getProgressPercentage() +
+          '%, #3b3b3b ' +
+          getProgressPercentage() +
+          '%, #3b3b3b 100%)'
+        "
+        (input)="onSeek($event)"
+        aria-label="Song progress"
+      />
+
+      <span class="time">
+        {{ formatTime(musicService.duration()) }}
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- =======================================================
+       RIGHT — PLAYER OPTIONS
+       ======================================================= -->
+
+  <div class="player-options">
+
+    <button
+      type="button"
+      class="option-button lyrics-option"
+      [class.active]="showLyrics()"
+      [disabled]="!musicService.currentSong()"
+      [attr.aria-pressed]="showLyrics()"
+      aria-label="Lyrics"
+      title="Lyrics"
+      (click)="toggleLyrics()"
+    >
+      ♫
+    </button>
+
+    <button
+      type="button"
+      class="option-button now-playing-option"
+      [class.active]="showNowPlaying()"
+      [disabled]="!musicService.currentSong()"
+      [attr.aria-pressed]="showNowPlaying()"
+      aria-label="Now playing"
+      title="Now playing"
+      (click)="toggleNowPlaying()"
+    >
+      ▱
+    </button>
+
+    <button
+      type="button"
+      class="option-button queue-option"
+      [class.active]="showQueue()"
+      [attr.aria-pressed]="showQueue()"
+      aria-label="Queue"
+      title="Queue"
+      (click)="toggleQueue()"
+    >
+      ☷
+    </button>
+
+    <button
+      type="button"
+      class="option-button"
+      aria-label="Connect to device"
+      title="Connect to device"
+    >
+      ▣
+    </button>
+
+    <button
+      type="button"
+      class="option-button"
+      aria-label="Mute or unmute"
+      title="Mute / Unmute"
+      (click)="musicService.toggleMute()"
+    >
+
+      @if (musicService.volume() === 0) {
+        ×
+      } @else {
+        ◖
+      }
+
+    </button>
+
+    <div class="volume-bar">
+
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        [value]="musicService.volume()"
+        (input)="onVolumeChange($event)"
+        aria-label="Volume"
+      />
+
+    </div>
+
+  </div>
+
+</div>

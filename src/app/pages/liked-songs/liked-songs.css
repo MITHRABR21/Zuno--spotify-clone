@@ -1,0 +1,490 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.liked-page {
+  min-height: 100%;
+  padding-bottom: 100px;
+  background:
+    radial-gradient(
+      circle at 20% 5%,
+      rgba(212, 175, 55, 0.16),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #171717 0%,
+      #0e0e0e 45%,
+      #090909 100%
+    );
+  color: #ffffff;
+}
+
+/* HERO */
+
+.liked-hero {
+  min-height: 300px;
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  padding: 38px 34px 30px;
+}
+
+.liked-cover {
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      135deg,
+      #d4af37,
+      #8e6f12 58%,
+      #2a2108
+    );
+  color: #0a0a0a;
+  font-size: 76px;
+  font-weight: 900;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.liked-info {
+  min-width: 0;
+  padding-bottom: 8px;
+}
+
+.liked-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+}
+
+.liked-info h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(46px, 7vw, 84px);
+  font-weight: 950;
+  line-height: 0.96;
+  letter-spacing: -3px;
+}
+
+.liked-info p {
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 14px;
+}
+
+.liked-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ACTIONS */
+
+.liked-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 34px 28px;
+}
+
+.play-all-button {
+  width: 58px;
+  height: 58px;
+  border: none;
+  border-radius: 50%;
+  background: #d4af37;
+  color: #080808;
+  font-size: 21px;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.play-all-button:hover:not(:disabled) {
+  transform: scale(1.06);
+  background: #e5c65a;
+}
+
+.shuffle-button,
+.clear-button {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.78);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.shuffle-button:hover:not(:disabled),
+.clear-button:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+
+.shuffle-button.active {
+  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+}
+
+.clear-button:hover:not(:disabled) {
+  color: #ff8d8d;
+}
+
+button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+/* LIST */
+
+.liked-list {
+  padding: 0 34px;
+}
+
+.liked-header-row,
+.liked-row {
+  display: grid;
+  grid-template-columns:
+    40px
+    minmax(230px, 1.8fr)
+    minmax(180px, 1.2fr)
+    70px
+    70px
+    44px;
+  align-items: center;
+  gap: 14px;
+}
+
+.liked-header-row {
+  min-height: 42px;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.liked-row {
+  min-height: 68px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.liked-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.liked-row.active {
+  background: rgba(212, 175, 55, 0.07);
+  border-color: rgba(212, 175, 55, 0.13);
+}
+
+.track-number {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.liked-row.active .track-number {
+  color: #d4af37;
+}
+
+.song-main {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.song-cover-wrapper {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #222222;
+}
+
+.song-cover {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.song-play-button {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: rgba(0, 0, 0, 0.62);
+  color: #ffffff;
+  font-size: 15px;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+
+.liked-row:hover .song-play-button,
+.liked-row.active .song-play-button {
+  opacity: 1;
+}
+
+.song-details {
+  min-width: 0;
+}
+
+.song-details h3 {
+  margin: 0;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 780;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.liked-row.active .song-details h3 {
+  color: #d4af37;
+}
+
+.artist-link,
+.album-link {
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.48);
+  font-family: inherit;
+  font-size: 12px;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.artist-link {
+  max-width: 220px;
+  margin-top: 5px;
+}
+
+.artist-link:hover,
+.album-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: #d4af37;
+  text-underline-offset: 3px;
+}
+
+.song-year,
+.song-duration {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+}
+
+.like-button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #d4af37;
+  font-size: 19px;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.like-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: scale(1.08);
+}
+
+/* EMPTY */
+
+.empty-liked {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 74px;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  font-size: 30px;
+}
+
+.empty-liked h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.empty-liked p {
+  margin: 9px 0 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .liked-hero {
+    padding: 30px 24px 26px;
+  }
+
+  .liked-cover {
+    width: 180px;
+    height: 180px;
+    font-size: 60px;
+  }
+
+  .liked-actions,
+  .liked-list {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .liked-header-row,
+  .liked-row {
+    grid-template-columns:
+      34px
+      minmax(200px, 1.6fr)
+      minmax(140px, 1fr)
+      60px
+      42px;
+  }
+
+  .song-year {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .liked-hero {
+    min-height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 26px 18px 22px;
+  }
+
+  .liked-cover {
+    width: 150px;
+    height: 150px;
+    font-size: 50px;
+  }
+
+  .liked-info h1 {
+    font-size: 44px;
+    letter-spacing: -2px;
+  }
+
+  .liked-actions,
+  .liked-list {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .liked-header-row {
+    display: none;
+  }
+
+  .liked-row {
+    grid-template-columns:
+      50px
+      minmax(0, 1fr)
+      40px;
+    gap: 10px;
+  }
+
+  .track-number,
+  .album-link,
+  .song-year,
+  .song-duration {
+    display: none;
+  }
+
+  .song-cover-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+
+  .like-button {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 480px) {
+  .liked-info h1 {
+    font-size: 36px;
+  }
+
+  .liked-actions {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .play-all-button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .shuffle-button,
+  .clear-button {
+    min-height: 38px;
+    padding: 0 14px;
+  }
+}
